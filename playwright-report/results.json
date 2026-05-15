@@ -1,0 +1,1096 @@
+{
+  "config": {
+    "configFile": "C:\\valedeskproj\\playwright.config.ts",
+    "rootDir": "C:/valedeskproj/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/valedeskproj/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "setup",
+        "name": "setup",
+        "testDir": "C:/valedeskproj/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/auth.setup.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/valedeskproj/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "valedesk",
+        "name": "valedesk",
+        "testDir": "C:/valedeskproj/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "playwright-report/results.json"
+        }
+      ],
+      [
+        "line",
+        null
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 1,
+    "webServer": {
+      "command": "npm run dev",
+      "url": "http://localhost:3000",
+      "reuseExistingServer": true,
+      "timeout": 60000
+    }
+  },
+  "suites": [
+    {
+      "title": "auth.setup.ts",
+      "file": "auth.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "authenticate as regular user",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 16538,
+                  "error": {
+                    "message": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel(/email/i)\u001b[22m\n",
+                    "stack": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel(/email/i)\u001b[22m\n\n    at C:\\valedeskproj\\tests\\e2e\\auth.setup.ts:25:35",
+                    "location": {
+                      "file": "C:\\valedeskproj\\tests\\e2e\\auth.setup.ts",
+                      "column": 35,
+                      "line": 25
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m   \u001b[90m// Fill sign-in form\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[33mTEST_USERS\u001b[39m\u001b[33m.\u001b[39mregular\u001b[33m.\u001b[39memail)\n \u001b[90m    |\u001b[39m                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[33mTEST_USERS\u001b[39m\u001b[33m.\u001b[39mregular\u001b[33m.\u001b[39mpassword)\n \u001b[90m 27 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\n \u001b[90m 28 |\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "C:\\valedeskproj\\tests\\e2e\\auth.setup.ts",
+                        "column": 35,
+                        "line": 25
+                      },
+                      "message": "TimeoutError: locator.fill: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel(/email/i)\u001b[22m\n\n\n\u001b[0m \u001b[90m 23 |\u001b[39m\n \u001b[90m 24 |\u001b[39m   \u001b[90m// Fill sign-in form\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/email/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[33mTEST_USERS\u001b[39m\u001b[33m.\u001b[39mregular\u001b[33m.\u001b[39memail)\n \u001b[90m    |\u001b[39m                                   \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByLabel(\u001b[35m/password/i\u001b[39m)\u001b[33m.\u001b[39mfill(\u001b[33mTEST_USERS\u001b[39m\u001b[33m.\u001b[39mregular\u001b[33m.\u001b[39mpassword)\n \u001b[90m 27 |\u001b[39m   \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgetByRole(\u001b[32m'button'\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[35m/sign in/i\u001b[39m })\u001b[33m.\u001b[39mclick()\n \u001b[90m 28 |\u001b[39m\u001b[0m\n\u001b[2m    at C:\\valedeskproj\\tests\\e2e\\auth.setup.ts:25:35\u001b[22m"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "\n[SETUP] Logging in as regular user...\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-05-15T02:39:39.587Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\valedeskproj\\test-results\\auth.setup.ts-authenticate-as-regular-user-setup\\test-failed-1.png"
+                    },
+                    {
+                      "name": "video",
+                      "contentType": "video/webm",
+                      "path": "C:\\valedeskproj\\test-results\\auth.setup.ts-authenticate-as-regular-user-setup\\video.webm"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\valedeskproj\\test-results\\auth.setup.ts-authenticate-as-regular-user-setup\\error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "C:\\valedeskproj\\tests\\e2e\\auth.setup.ts",
+                    "column": 35,
+                    "line": 25
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "17e3fe6f4d9d8bd79c6b-f9b42be7ea2d20427299",
+          "file": "auth.setup.ts",
+          "line": 17,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "auth.spec.ts",
+      "file": "auth.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Email Authentication",
+          "file": "auth.spec.ts",
+          "line": 15,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should log in with valid email and password",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-8ba6835a3be2f44245b8",
+              "file": "auth.spec.ts",
+              "line": 17,
+              "column": 3
+            },
+            {
+              "title": "should show error for wrong password",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-ec0d555752da514eafa9",
+              "file": "auth.spec.ts",
+              "line": 32,
+              "column": 3
+            },
+            {
+              "title": "should show error for non-existent email",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-b969107fdec32e988fe5",
+              "file": "auth.spec.ts",
+              "line": 45,
+              "column": 3
+            },
+            {
+              "title": "should block empty form submission",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-ba0b395ae6ffb1d06f8e",
+              "file": "auth.spec.ts",
+              "line": 57,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Session Persistence",
+          "file": "auth.spec.ts",
+          "line": 67,
+          "column": 6,
+          "specs": [
+            {
+              "title": "session survives a full page refresh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-63e5253b883ca776487b",
+              "file": "auth.spec.ts",
+              "line": 71,
+              "column": 3
+            },
+            {
+              "title": "session survives navigation between pages",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-c220be0b4f7f4c5866ca",
+              "file": "auth.spec.ts",
+              "line": 90,
+              "column": 3
+            },
+            {
+              "title": "Supabase data loads after navigating back from room detail",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-67ca48ee70f101c0d10b",
+              "file": "auth.spec.ts",
+              "line": 101,
+              "column": 3
+            },
+            {
+              "title": "protected dashboard is not accessible without auth",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-0e99e216fc965769ea3d",
+              "file": "auth.spec.ts",
+              "line": 126,
+              "column": 3
+            },
+            {
+              "title": "protected admin is not accessible to regular user",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-f3b89598769729f7d86c",
+              "file": "auth.spec.ts",
+              "line": 141,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Sign Up Flow",
+          "file": "auth.spec.ts",
+          "line": 152,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should create a new account with email",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-f024b40f1ad601b64be4",
+              "file": "auth.spec.ts",
+              "line": 156,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Logout",
+          "file": "auth.spec.ts",
+          "line": 196,
+          "column": 6,
+          "specs": [
+            {
+              "title": "should log out and redirect to home page",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "d748ac400d08b85935ef-d84d27b9f29ed5b5020c",
+              "file": "auth.spec.ts",
+              "line": 199,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "booking.spec.ts",
+      "file": "booking.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Booking Flow — Step by Step",
+          "file": "booking.spec.ts",
+          "line": 59,
+          "column": 6,
+          "specs": [
+            {
+              "title": "STEP 1: Room detail → booking page loads without crash",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-40d1dca382bd1a1cd86a",
+              "file": "booking.spec.ts",
+              "line": 61,
+              "column": 3
+            },
+            {
+              "title": "STEP 1: Date and time selection works",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-d2e21992f59e9bdf6074",
+              "file": "booking.spec.ts",
+              "line": 78,
+              "column": 3
+            },
+            {
+              "title": "STEP 1: Add-ons toggle without crash",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-30a48f4fa6d93df0a0f8",
+              "file": "booking.spec.ts",
+              "line": 95,
+              "column": 3
+            },
+            {
+              "title": "STEP 1→2: Proceeding to attendee step",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-eeead7c9f99e28a8f509",
+              "file": "booking.spec.ts",
+              "line": 113,
+              "column": 3
+            },
+            {
+              "title": "STEP 2: Attendee details pre-filled from user profile",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-3225b7ffba3f13638dfe",
+              "file": "booking.spec.ts",
+              "line": 134,
+              "column": 3
+            },
+            {
+              "title": "STEP 2→3: Proceeding to payment step",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-d7378d522e9c7046859e",
+              "file": "booking.spec.ts",
+              "line": 153,
+              "column": 3
+            },
+            {
+              "title": "STEP 3: Stripe card form renders",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-b99cbc9a38d63ef320c6",
+              "file": "booking.spec.ts",
+              "line": 181,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Full Booking E2E",
+          "file": "booking.spec.ts",
+          "line": 212,
+          "column": 6,
+          "specs": [
+            {
+              "title": "complete full booking flow and reach confirmation",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-6b19cebe12724fcd678d",
+              "file": "booking.spec.ts",
+              "line": 214,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Booking Management",
+          "file": "booking.spec.ts",
+          "line": 326,
+          "column": 6,
+          "specs": [
+            {
+              "title": "cancel button appears and opens confirmation modal",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-605aab51402b7568d2e3",
+              "file": "booking.spec.ts",
+              "line": 328,
+              "column": 3
+            },
+            {
+              "title": "QR code modal opens for confirmed booking",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-f91e79303b9bcdb980e1",
+              "file": "booking.spec.ts",
+              "line": 353,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Real-time Availability",
+          "file": "booking.spec.ts",
+          "line": 374,
+          "column": 6,
+          "specs": [
+            {
+              "title": "room availability reflects in-DB bookings",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "a3a10f2351dcc49e1cb9-f0506a87ec7dcd0672c5",
+              "file": "booking.spec.ts",
+              "line": 376,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "dashboard.spec.ts",
+      "file": "dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard Home (/dashboard)",
+          "file": "dashboard.spec.ts",
+          "line": 40,
+          "column": 6,
+          "specs": [
+            {
+              "title": "loads initial data from Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-a4b020feb9de17a719e3",
+              "file": "dashboard.spec.ts",
+              "line": 42,
+              "column": 3
+            },
+            {
+              "title": "loads data correctly AFTER page refresh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-b3d56df523a6d4be0d6a",
+              "file": "dashboard.spec.ts",
+              "line": 54,
+              "column": 3
+            },
+            {
+              "title": "upcoming bookings widget shows real booking data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-d3c648deec6da30d3132",
+              "file": "dashboard.spec.ts",
+              "line": 75,
+              "column": 3
+            },
+            {
+              "title": "announcements banner appears when active announcement exists",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-09f663f6cf646be785d9",
+              "file": "dashboard.spec.ts",
+              "line": 88,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Browse Rooms (/dashboard/rooms)",
+          "file": "dashboard.spec.ts",
+          "line": 98,
+          "column": 6,
+          "specs": [
+            {
+              "title": "loads all rooms from Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-52caa193cd301c2614f9",
+              "file": "dashboard.spec.ts",
+              "line": 100,
+              "column": 3
+            },
+            {
+              "title": "rooms reload correctly after page refresh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-14c9e2ba847377528c50",
+              "file": "dashboard.spec.ts",
+              "line": 113,
+              "column": 3
+            },
+            {
+              "title": "room images load without broken image icons",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-061e434de90da6b2c359",
+              "file": "dashboard.spec.ts",
+              "line": 132,
+              "column": 3
+            },
+            {
+              "title": "type filter works and re-fetches from Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-cf5c5085823d6602ce04",
+              "file": "dashboard.spec.ts",
+              "line": 151,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "Room Detail (/dashboard/rooms/[id])",
+          "file": "dashboard.spec.ts",
+          "line": 171,
+          "column": 6,
+          "specs": [
+            {
+              "title": "room detail page loads all data",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-f7b1c98784d2a6d19dee",
+              "file": "dashboard.spec.ts",
+              "line": 173,
+              "column": 3
+            },
+            {
+              "title": "availability calendar renders and is interactive",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-e3678c85b8b3e6224d1a",
+              "file": "dashboard.spec.ts",
+              "line": 189,
+              "column": 3
+            },
+            {
+              "title": "room detail data reloads after hard refresh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-0b695967d0007ea09225",
+              "file": "dashboard.spec.ts",
+              "line": 211,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "My Bookings (/dashboard/bookings)",
+          "file": "dashboard.spec.ts",
+          "line": 230,
+          "column": 6,
+          "specs": [
+            {
+              "title": "loads booking history from Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-68bdb808b3c23614e54c",
+              "file": "dashboard.spec.ts",
+              "line": 232,
+              "column": 3
+            },
+            {
+              "title": "bookings reload after page refresh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-d1af37105ea9547a2ee6",
+              "file": "dashboard.spec.ts",
+              "line": 244,
+              "column": 3
+            },
+            {
+              "title": "tabs switch between upcoming, past and cancelled",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-b2a4f1c7a19f4e6fbe6e",
+              "file": "dashboard.spec.ts",
+              "line": 259,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "User Profile (/dashboard/profile)",
+          "file": "dashboard.spec.ts",
+          "line": 276,
+          "column": 6,
+          "specs": [
+            {
+              "title": "profile page loads user data from Supabase",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-cc682ff89522a0ae1ce9",
+              "file": "dashboard.spec.ts",
+              "line": 278,
+              "column": 3
+            },
+            {
+              "title": "profile data reloads after refresh",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-87301919d20d729fcb03",
+              "file": "dashboard.spec.ts",
+              "line": 288,
+              "column": 3
+            },
+            {
+              "title": "can update profile without crash",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "valedesk",
+                  "projectName": "valedesk",
+                  "results": [],
+                  "status": "skipped"
+                }
+              ],
+              "id": "90cda532ab82d274b30b-d2e65cbc593c3bf3491b",
+              "file": "dashboard.spec.ts",
+              "line": 298,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-05-15T02:39:38.487Z",
+    "duration": 18369.586000000003,
+    "expected": 0,
+    "skipped": 39,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}
