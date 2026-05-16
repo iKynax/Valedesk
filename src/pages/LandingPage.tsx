@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/landing/Navbar';
 import HeroWidget from '@/components/landing/HeroWidget';
+import { brandLogos } from '@/components/landing/BrandLogos';
 import TestimonialCarousel from '@/components/landing/TestimonialCarousel';
 
 type SpaceStatus = 'Available' | 'Occupied' | 'Maintenance' | 'Limited';
@@ -157,18 +158,18 @@ export default function LandingPage() {
               animate={{ opacity: 1, rotate: -4, y: 0 }}
               transition={{ delay: 0.4, duration: 0.6 }}
               whileHover={{ rotate: -2, scale: 1.04 }}
-              className="absolute -left-12 -top-12 z-[1] hidden h-48 w-72 cursor-pointer overflow-hidden rounded-2xl glass-image-frame lg:block"
+              className="absolute -left-16 -top-16 z-[1] hidden h-64 w-96 cursor-pointer overflow-hidden rounded-2xl glass-image-frame lg:block"
             >
-              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Meeting room" className="h-full w-full object-cover" />
+              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="Meeting room" className="h-full w-full object-cover" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, rotate: 5, y: 40 }}
               animate={{ opacity: 1, rotate: 5, y: 0 }}
               transition={{ delay: 0.55, duration: 0.6 }}
               whileHover={{ rotate: 3, scale: 1.04 }}
-              className="absolute -right-10 -top-16 z-[1] hidden h-44 w-64 cursor-pointer overflow-hidden rounded-2xl glass-image-frame lg:block"
+              className="absolute -right-14 -top-20 z-[1] hidden h-56 w-80 cursor-pointer overflow-hidden rounded-2xl glass-image-frame lg:block"
             >
-              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="Happy team" className="h-full w-full object-cover" />
+              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80" alt="Happy team" className="h-full w-full object-cover" />
             </motion.div>
 
             <div className="relative z-[2]">
@@ -183,16 +184,12 @@ export default function LandingPage() {
           <p className="shrink-0 text-[10px] font-black uppercase tracking-[0.22em] text-[#1E90FF]">Trust Network</p>
           <div className="flex flex-1 overflow-hidden">
             <div className="marquee-track" style={{ animationDuration: '50s' }}>
-              <div className="flex items-center gap-14 pr-14">
-                {[
-                  'Google', 'Microsoft', 'Spotify', 'Slack', 'Airbnb',
-                  'Netflix', 'Stripe', 'Shopify', 'Uber', 'Dropbox',
-                  'LinkedIn', 'Samsung',
-                  'Google', 'Microsoft', 'Spotify', 'Slack', 'Airbnb',
-                  'Netflix', 'Stripe', 'Shopify', 'Uber', 'Dropbox',
-                  'LinkedIn', 'Samsung',
-                ].map((name, i) => (
-                  <span key={`${name}-${i}`} className="trust-logo-text shrink-0 select-none text-xl font-extrabold tracking-tight">{name}</span>
+              <div className="flex items-center gap-12 pr-12">
+                {[...brandLogos, ...brandLogos].map((brand, i) => (
+                  <div key={`${brand.name}-${i}`} className="flex shrink-0 items-center gap-2 opacity-70 transition-opacity hover:opacity-100">
+                    {brand.svg}
+                    <span className="trust-logo-text text-sm font-bold tracking-tight">{brand.name}</span>
+                  </div>
                 ))}
               </div>
             </div>

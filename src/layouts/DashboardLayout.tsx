@@ -96,7 +96,7 @@ function DashboardShell() {
                     <span className="text-xs font-black uppercase tracking-widest">{item.name}</span>
                   </div>
                   {item.badge && (
-                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-black ${isActive ? 'bg-[#1E90FF] text-white' : 'bg-rose-100 text-rose-800'}`}>
+                    <span className={`rounded-full px-2 py-0.5 text-[10px] font-black ${isActive ? 'bg-[#1E90FF] text-white' : 'bg-rose-500 text-white'}`}>
                       {item.badge}
                     </span>
                   )}

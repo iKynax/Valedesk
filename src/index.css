@@ -287,6 +287,18 @@
 .vd-dark [class*="bg-white/90"] { background-color: rgba(15, 23, 42, 0.95) !important; }
 .vd-dark [class*="bg-white"] { background-color: #111827 !important; }
 
+/* Promo carousel arrows — keep transparent in dark mode */
+.vd-dark .promo-nav-arrow {
+  background-color: rgba(255,255,255,0.1) !important;
+  border-color: rgba(255,255,255,0.25) !important;
+  color: rgba(255,255,255,0.8) !important;
+}
+.vd-dark .promo-nav-arrow:hover {
+  background-color: rgba(255,255,255,0.2) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+  color: #fff !important;
+}
+
 /* Text */
 .vd-dark [class*="text-[#061B3A]"] { color: #E2E8F0 !important; }
 .vd-dark h1, .vd-dark h2, .vd-dark h3, .vd-dark h4 { color: #F1F5F9 !important; }

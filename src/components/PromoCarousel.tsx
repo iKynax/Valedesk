@@ -149,13 +149,13 @@ export default function PromoCarousel() {
       {/* Navigation arrows */}
       <button
         onClick={(e) => { e.stopPropagation(); prev() }}
-        className="absolute left-3 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition-all hover:bg-white/40"
+        className="promo-nav-arrow absolute left-3 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white/80 backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/20 hover:text-white"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
       <button
         onClick={(e) => { e.stopPropagation(); next() }}
-        className="absolute right-3 top-1/2 z-20 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 text-white backdrop-blur transition-all hover:bg-white/40"
+        className="promo-nav-arrow absolute right-3 top-1/2 z-20 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-white/25 bg-white/10 text-white/80 backdrop-blur-md transition-all hover:border-white/40 hover:bg-white/20 hover:text-white"
       >
         <ChevronRight className="h-4 w-4" />
       </button>
