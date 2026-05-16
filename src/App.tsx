@@ -17,9 +17,11 @@ import NotificationsPage from './pages/dashboard/NotificationsPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './components/AuthProvider';
+import { DarkModeProvider } from './hooks/useDarkMode';
 
 export default function App() {
   return (
+    <DarkModeProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -50,5 +52,6 @@ export default function App() {
         <Toaster richColors position="top-right" />
       </BrowserRouter>
     </AuthProvider>
+    </DarkModeProvider>
   );
 }

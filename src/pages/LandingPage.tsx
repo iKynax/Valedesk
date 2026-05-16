@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import {
   ArrowRight,
-  BadgeCheck,
   BarChart3,
   Calendar,
   ChevronRight,
@@ -11,11 +10,13 @@ import {
   Sparkles,
   Users,
   Zap,
+  CheckCircle2,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/landing/Navbar';
 import HeroWidget from '@/components/landing/HeroWidget';
+import TestimonialCarousel from '@/components/landing/TestimonialCarousel';
 
 type SpaceStatus = 'Available' | 'Occupied' | 'Maintenance' | 'Limited';
 
@@ -28,7 +29,7 @@ const SPACE_TYPES: Array<{
   id: string;
   status: SpaceStatus;
 }> = [
-  { name: 'Executive Suite', desc: 'Private focus suite with smart access and privacy glass.', capacity: '1-2', price: 'RM25/hr', img: 'https://images.unsplash.com/photo-1620306169992-d352bc13d50f?w=800&q=80', id: '#D-102', status: 'Available' },
+  { name: 'Executive Suite', desc: 'Private focus suite with smart access and privacy glass.', capacity: '1-2', price: 'RM25/hr', img: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80', id: '#D-102', status: 'Available' },
   { name: 'Open Bay A', desc: 'Open-plan collaborative seating for flexible work days.', capacity: '1', price: 'RM15/hr', img: 'https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?w=800&q=80', id: '#D-105', status: 'Limited' },
   { name: 'Conference Room', desc: 'AV-ready meeting room for project reviews and workshops.', capacity: '12', price: 'RM60/hr', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80', id: '#D-108', status: 'Occupied' },
   { name: 'Boardroom', desc: 'Premium room for leadership sessions and client pitches.', capacity: '18', price: 'RM150/hr', img: 'https://images.unsplash.com/photo-1517502884422-41eaead166d4?w=800&q=80', id: '#D-112', status: 'Available' },
@@ -70,13 +71,13 @@ function StatusPill({ status }: { status: SpaceStatus }) {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen scroll-smooth bg-[#F4F8FF] font-sans text-[#061B3A]">
+    <div className="landing-page min-h-screen scroll-smooth bg-[#F4F8FF] font-sans text-[#061B3A]">
       <Navbar />
 
       <section className="relative flex min-h-screen items-center overflow-hidden bg-[#061B3A] pt-32 text-white">
         <div className="absolute inset-0 valedesk-grid opacity-70" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(30,144,255,0.18),transparent_36rem)]" />
-        <div className="absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#F4F8FF] to-transparent" />
+        <div className="hero-fade absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-[#F4F8FF] to-transparent" />
 
         <div className="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-12 px-6 pb-20 lg:grid-cols-12 lg:px-12">
           <div className="lg:col-span-6">
@@ -150,20 +151,51 @@ export default function LandingPage() {
           </div>
 
           <div className="relative mt-8 lg:col-span-6 lg:mt-0">
-            <HeroWidget />
+            {/* Decorative angled images */}
+            <motion.div
+              initial={{ opacity: 0, rotate: -4, y: 30 }}
+              animate={{ opacity: 1, rotate: -4, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+              whileHover={{ rotate: -2, scale: 1.04 }}
+              className="absolute -left-12 -top-12 z-[1] hidden h-48 w-72 cursor-pointer overflow-hidden rounded-2xl glass-image-frame lg:block"
+            >
+              <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Meeting room" className="h-full w-full object-cover" />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, rotate: 5, y: 40 }}
+              animate={{ opacity: 1, rotate: 5, y: 0 }}
+              transition={{ delay: 0.55, duration: 0.6 }}
+              whileHover={{ rotate: 3, scale: 1.04 }}
+              className="absolute -right-10 -top-16 z-[1] hidden h-44 w-64 cursor-pointer overflow-hidden rounded-2xl glass-image-frame lg:block"
+            >
+              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="Happy team" className="h-full w-full object-cover" />
+            </motion.div>
+
+            <div className="relative z-[2]">
+              <HeroWidget />
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="overflow-hidden border-y border-sky-100 bg-white py-7">
+      <section className="trust-network-bar overflow-hidden border-y border-sky-100 bg-white py-5">
         <div className="flex items-center gap-6 px-6">
           <p className="shrink-0 text-[10px] font-black uppercase tracking-[0.22em] text-[#1E90FF]">Trust Network</p>
-          <div className="flex flex-1 overflow-hidden whitespace-nowrap">
-            <motion.div animate={{ x: [0, -1000] }} transition={{ repeat: Infinity, duration: 25, ease: 'linear' }} className="flex flex-nowrap items-center gap-16">
-              {['Grab', 'Shopee', 'CIMB Bank', 'Maxis', 'Petronas', 'AirAsia', 'Maybank', 'Lazada', 'Axiata', 'TM', 'Grab', 'Shopee'].map((company, i) => (
-                <span key={`${company}-${i}`} className="px-4 text-2xl font-black uppercase tracking-tighter text-[#061B3A]/18">{company}</span>
-              ))}
-            </motion.div>
+          <div className="flex flex-1 overflow-hidden">
+            <div className="marquee-track" style={{ animationDuration: '50s' }}>
+              <div className="flex items-center gap-14 pr-14">
+                {[
+                  'Google', 'Microsoft', 'Spotify', 'Slack', 'Airbnb',
+                  'Netflix', 'Stripe', 'Shopify', 'Uber', 'Dropbox',
+                  'LinkedIn', 'Samsung',
+                  'Google', 'Microsoft', 'Spotify', 'Slack', 'Airbnb',
+                  'Netflix', 'Stripe', 'Shopify', 'Uber', 'Dropbox',
+                  'LinkedIn', 'Samsung',
+                ].map((name, i) => (
+                  <span key={`${name}-${i}`} className="trust-logo-text shrink-0 select-none text-xl font-extrabold tracking-tight">{name}</span>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -192,12 +224,12 @@ export default function LandingPage() {
                 transition={{ delay: i * 0.07 }}
                 className={`group overflow-hidden rounded-2xl border border-sky-100 bg-white p-5 shadow-[0_18px_55px_rgba(30,144,255,0.08)] transition-all hover:-translate-y-1 hover:border-[#1E90FF]/50 hover:shadow-[0_24px_70px_rgba(30,144,255,0.16)] ${space.status === 'Maintenance' ? 'opacity-75' : ''}`}
               >
-                <div className="mb-5 flex items-start justify-between gap-4">
-                  <div>
+                <div className="mb-5 flex items-start justify-between gap-3 overflow-hidden">
+                  <div className="min-w-0">
                     <p className="font-mono text-xs text-[#1E90FF]/60">{space.id}</p>
-                    <h3 className="mt-1 text-2xl font-black uppercase tracking-tight text-[#061B3A]">{space.name}</h3>
+                    <h3 className="mt-1 truncate text-2xl font-black uppercase tracking-tight text-[#061B3A]">{space.name}</h3>
                   </div>
-                  <StatusPill status={space.status} />
+                  <div className="shrink-0"><StatusPill status={space.status} /></div>
                 </div>
 
                 <div className="mb-5 aspect-video w-full overflow-hidden rounded-xl bg-sky-50">
@@ -224,30 +256,45 @@ export default function LandingPage() {
 
       <section id="features" className="bg-[#061B3A] py-24 text-white">
         <div className="mx-auto max-w-7xl px-6 lg:px-12">
-          <h2 className="mb-16 text-5xl font-black uppercase leading-none tracking-tighter md:text-7xl">
-            Platform
-            <br />
-            Features
-          </h2>
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-4 text-xs font-black uppercase tracking-widest text-[#1E90FF]">Why Valedesk</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-16 text-5xl font-black uppercase leading-none tracking-tighter md:text-7xl">
+            Built for the way<br />you work.
+          </motion.h2>
 
-          <div className="grid gap-5 lg:grid-cols-3">
-            {FEATURES.map((feature, i) => {
-              const Icon = feature.icon;
+          {/* Stats row */}
+          <div className="mb-12 grid gap-5 lg:grid-cols-3">
+            {[
+              { label: 'Booking Speed', sublabel: 'Average Time', stat: '< 30s', desc: 'Book Any Space, Instantly', body: 'Reserve desks, pods, and rooms in seconds with real-time availability and instant confirmations.' },
+              { label: 'Spaces Available', sublabel: 'Across Bangsar South', stat: '50+', desc: 'Every Space You Need', body: 'Hot desks from RM15/hr, meeting rooms, boardrooms, event studios, and private offices — all in one place.' },
+              { label: 'Uptime', sublabel: 'Platform Reliability', stat: '99.9%', desc: 'Always-On Platform', body: 'Secure Stripe payments, real-time slot management, and email confirmations you can count on.' },
+            ].map((card, i) => (
+              <motion.div key={card.stat} initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }} className="group rounded-2xl border border-white/10 bg-white/[0.04] p-7 transition-all hover:border-[#1E90FF]/40 hover:bg-white/[0.07]">
+                <p className="text-[10px] font-black uppercase tracking-widest text-sky-300/60">{card.label}</p>
+                <p className="mb-4 text-[9px] font-bold text-white/30">{card.sublabel}</p>
+                <div className="mb-5 flex items-end gap-3">
+                  <span className="bg-gradient-to-r from-[#38BDF8] to-[#1E90FF] bg-clip-text text-5xl font-black tracking-tighter text-transparent">{card.stat}</span>
+                </div>
+                <h3 className="mb-2 text-lg font-black uppercase tracking-tight">{card.desc}</h3>
+                <p className="text-sm font-medium leading-relaxed text-white/50">{card.body}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Feature highlights row */}
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              { icon: Zap, title: 'Instant Booking', desc: 'Live availability, one-click reservations with clean confirmations.' },
+              { icon: ShieldCheck, title: 'Secure Payments', desc: 'Transparent Stripe checkout with real-time payment processing.' },
+              { icon: MessageSquareCode, title: 'Vale AI Assistant', desc: 'Built-in chatbot for questions, recommendations, and support.' },
+            ].map((f, i) => {
+              const Icon = f.icon;
               return (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.05 }}
-                  className="group rounded-2xl border border-white/10 bg-white/[0.055] p-7 transition-all hover:border-[#1E90FF]/60 hover:bg-white/[0.075]"
-                >
-                  <div className="mb-8 h-1 w-12 rounded-full bg-[#1E90FF] shadow-[0_0_20px_rgba(30,144,255,0.62)] transition-all group-hover:w-20" />
-                  <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#1E90FF]/14 text-[#38BDF8]">
-                    <Icon className="h-5 w-5" />
+                <motion.div key={f.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 + i * 0.08 }} className="flex items-start gap-3 rounded-xl border border-white/8 bg-white/[0.03] p-4">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+                  <div>
+                    <p className="text-sm font-black uppercase tracking-wide">{f.title}</p>
+                    <p className="mt-1 text-xs font-medium text-white/45">{f.desc}</p>
                   </div>
-                  <h3 className="mb-2 text-2xl font-black uppercase tracking-tight">{feature.title}</h3>
-                  <p className="text-sm font-medium leading-relaxed text-white/58">{feature.desc}</p>
                 </motion.div>
               );
             })}
@@ -255,66 +302,67 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="border-b border-sky-100 bg-[#F4F8FF] py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12">
-          <div className="grid gap-8 lg:grid-cols-3">
-            {['Browse by space, date, capacity, and amenities', 'Choose the slot and confirm instantly', 'Check in with QR or booking ID'].map((step, i) => (
-              <div key={step} className="rounded-2xl border border-sky-100 bg-white p-8 shadow-[0_18px_55px_rgba(30,144,255,0.08)]">
-                <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-[#1E90FF] text-lg font-black text-white shadow-[0_12px_28px_rgba(30,144,255,0.28)]">{i + 1}</div>
-                <h3 className="mb-3 text-2xl font-black uppercase tracking-tight">{['Browse', 'Book', 'Check In'][i]}</h3>
-                <p className="text-sm font-medium text-[#061B3A]/60">{step}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── How It Works — Horizontal Timeline ─────────────────── */}
+      <section className="relative border-b border-sky-100 bg-[#061B3A] py-24 text-white overflow-hidden">
+        <div className="absolute inset-0 valedesk-grid opacity-40" />
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12">
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className="mb-4 text-xs font-black uppercase tracking-widest text-[#1E90FF]">Simple Process</motion.p>
+          <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="mb-16 text-5xl font-black uppercase leading-none tracking-tighter md:text-7xl">How It Works.</motion.h2>
 
-      <section id="pricing" className="bg-white py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12">
-          <div className="mb-16 flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
-            <h2 className="text-5xl font-black uppercase leading-none tracking-tighter md:text-7xl">Simple Pricing.</h2>
-            <p className="text-xs font-black uppercase tracking-widest text-[#1E90FF]">Transparent Billing</p>
-          </div>
+          {/* Horizontal timeline */}
+          <div className="relative">
+            {/* Animated glow bar (hidden on mobile) */}
+            <div className="absolute left-0 right-0 top-6 hidden h-0.5 md:block">
+              <div className="timeline-bar-animated h-full w-full rounded-full" />
+            </div>
 
-          <div className="grid gap-5 md:grid-cols-3">
-            {[
-              ['Day Pass', '50', 'RM / Day', ['Hot desk seating', 'Hi-speed WiFi', 'Artisan coffee']],
-              ['Flex Plan', '299', 'RM / Mo', ['20 hrs any space', 'Priority booking', 'Rolling credit']],
-              ['Team Plan', '999', 'RM / Mo', ['80 hrs for team', 'Admin panel', 'Deep analytics']],
-            ].map(([name, price, unit, features], i) => {
-              const popular = i === 1;
-              return (
-                <div key={name as string} className={`relative rounded-2xl border p-8 ${popular ? 'border-[#1E90FF] bg-[#061B3A] text-white shadow-[0_24px_70px_rgba(30,144,255,0.22)]' : 'border-sky-100 bg-[#F4F8FF] text-[#061B3A]'}`}>
-                  {popular && <span className="absolute right-5 top-5 rounded-full bg-[#1E90FF] px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">Popular</span>}
-                  <p className={`mb-2 text-[10px] font-black uppercase tracking-widest ${popular ? 'text-sky-200/70' : 'text-[#1E90FF]'}`}>Tier 0{i + 1}</p>
-                  <h3 className="mb-4 text-3xl font-black uppercase">{name}</h3>
-                  <div className="mb-8 flex items-baseline gap-1">
-                    <span className="text-6xl font-black tracking-tighter">{price}</span>
-                    <span className={`text-xs font-black uppercase tracking-widest ${popular ? 'text-white/45' : 'text-[#061B3A]/45'}`}>{unit}</span>
+            <div className="grid gap-8 md:grid-cols-3">
+              {[
+                { step: '01', title: 'Browse Spaces', desc: 'Filter by type, capacity, date, and amenities. See real-time availability and pricing for every room.', note: 'Pricing from RM15/hr' },
+                { step: '02', title: 'Book Instantly', desc: 'Select your time slot and confirm in one click. Secure payment via Stripe with instant email confirmation.', note: 'Under 30 seconds' },
+                { step: '03', title: 'Check In & Work', desc: 'Show your booking QR code or ID at the front desk. Enjoy hi-speed WiFi, coffee, and a premium workspace.', note: 'Zero friction' },
+              ].map((item, i) => (
+                <motion.div
+                  key={item.step}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="relative pt-14 md:pt-16"
+                >
+                  {/* Glowing dot */}
+                  <div className="absolute left-0 top-0 md:left-1/2 md:-translate-x-1/2">
+                    <div className="timeline-dot-glow flex h-12 w-12 items-center justify-center rounded-full bg-[#1E90FF] text-sm font-black text-white">
+                      {item.step}
+                    </div>
                   </div>
-                  <ul className={`mb-12 space-y-4 border-t pt-8 text-xs font-bold ${popular ? 'border-white/15 text-white/82' : 'border-sky-100 text-[#061B3A]/75'}`}>
-                    {(features as string[]).map((feature) => (
-                      <li key={feature} className="flex gap-3"><BadgeCheck className="h-4 w-4 shrink-0 text-[#1E90FF]" /> {feature}</li>
-                    ))}
-                  </ul>
-                  <Button variant={popular ? 'default' : 'outline'} className={`h-12 w-full rounded-full text-xs font-black uppercase tracking-widest ${popular ? 'bg-white text-[#061B3A] hover:bg-sky-50' : 'border-sky-200 text-[#061B3A] hover:bg-sky-50'}`}>
-                    {popular ? 'Subscribe' : i === 0 ? 'Purchase' : 'Contact Sales'}
-                  </Button>
-                </div>
-              );
-            })}
+
+                  {/* Content card */}
+                  <div className="liquid-glass-card rounded-2xl p-6">
+                    <h3 className="mb-2 text-xl font-black uppercase tracking-tight">{item.title}</h3>
+                    <p className="mb-4 text-sm font-medium leading-relaxed text-white/55">{item.desc}</p>
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-emerald-400">
+                      <CheckCircle2 className="h-3 w-3" /> {item.note}
+                    </span>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-[#0B5ED7] to-[#1E90FF] px-6 py-20 text-white">
+      {/* ── Testimonials (replaces pricing) ───────────────────────── */}
+      <TestimonialCarousel />
+
+      <section className="cta-elevate bg-gradient-to-r from-[#0B5ED7] to-[#1E90FF] px-6 py-20 text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
           <div>
             <h2 className="mb-3 text-4xl font-black uppercase tracking-tighter md:text-6xl">Ready to elevate your workspace?</h2>
             <p className="text-base font-medium text-white/75">Join 2,000+ professionals already booking with Valedesk.</p>
           </div>
           <Link to="/auth">
-            <Button className="h-14 rounded-full bg-white px-8 text-xs font-black uppercase tracking-widest text-[#0B5ED7] hover:bg-sky-50">
+            <Button className="h-14 rounded-full bg-white px-8 text-xs font-black uppercase tracking-widest text-[#0B5ED7] shadow-[0_12px_32px_rgba(0,0,0,0.15)] hover:bg-sky-50 hover:scale-105 transition-transform">
               Get Started <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
@@ -332,7 +380,7 @@ export default function LandingPage() {
           </div>
           <div className="flex flex-wrap gap-6 text-[10px] font-black uppercase tracking-widest text-white/45">
             <a href="#spaces" className="hover:text-white">Browse Spaces</a>
-            <a href="#pricing" className="hover:text-white">Pricing</a>
+            <a href="#reviews" className="hover:text-white">Reviews</a>
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
             <span>Copyright {new Date().getFullYear()} Valedesk Inc.</span>

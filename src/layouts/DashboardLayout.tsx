@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
-import { Home, Search, Calendar, Heart, Bell, User, LogOut } from 'lucide-react';
+import { Home, Search, Calendar, Heart, Bell, User, LogOut, Sun, Moon } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { hasSupabaseConfig } from '@/lib/env';
 import { createClient } from '@/lib/supabase/client';
 import LogoutModal from '@/components/LogoutModal';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
-export default function DashboardLayout() {
+function DashboardShell() {
   const location = useLocation();
   const { profile, user, signOut } = useAuth();
+  const { dark, toggle } = useDarkMode();
   const [showLogout, setShowLogout] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -17,7 +19,6 @@ export default function DashboardLayout() {
     if (!user || !hasSupabaseConfig()) return;
     const supabase = createClient();
 
-    // Initial load
     supabase
       .from('notifications')
       .select('id', { count: 'exact', head: true })
@@ -27,14 +28,12 @@ export default function DashboardLayout() {
         if (count !== null) setUnreadCount(count);
       });
 
-    // Realtime subscription for new notifications
     const channel = supabase
       .channel('sidebar-notif-count')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
         () => {
-          // Re-fetch count on any change
           supabase
             .from('notifications')
             .select('id', { count: 'exact', head: true })
@@ -122,13 +121,31 @@ export default function DashboardLayout() {
       </aside>
 
       <main className="flex flex-1 flex-col overflow-auto bg-[#F4F8FF] valedesk-light-grid">
-        <header className="flex h-20 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-6 md:hidden">
-          <Link to="/" className="flex items-center gap-2 text-xl font-black uppercase tracking-tighter text-[#061B3A]">
+        <header className="flex h-16 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-6">
+          {/* Mobile logo */}
+          <Link to="/" className="flex items-center gap-2 text-xl font-black uppercase tracking-tighter text-[#061B3A] md:hidden">
             <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#1E90FF]">
               <span className="h-1.5 w-1.5 bg-white" />
             </span>
             Valedesk
           </Link>
+
+          {/* Spacer for desktop */}
+          <div className="hidden md:block" />
+
+          {/* Dark mode toggle */}
+          <button
+            onClick={toggle}
+            className={`flex items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-black uppercase tracking-widest transition-all ${
+              dark
+                ? 'border-blue-500/30 bg-blue-500/10 text-blue-400'
+                : 'border-sky-200 bg-sky-50 text-[#061B3A]/55 hover:border-blue-300'
+            }`}
+            title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+            {dark ? 'Light' : 'Dark'}
+          </button>
         </header>
 
         <div className="mx-auto w-full max-w-7xl flex-1 p-8 md:p-12">
@@ -136,7 +153,6 @@ export default function DashboardLayout() {
         </div>
       </main>
 
-      {/* Logout Confirmation Modal */}
       <LogoutModal
         open={showLogout}
         onClose={() => setShowLogout(false)}
@@ -144,4 +160,8 @@ export default function DashboardLayout() {
       />
     </div>
   );
+}
+
+export default function DashboardLayout() {
+  return <DashboardShell />;
 }

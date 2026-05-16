@@ -265,6 +265,216 @@
   animation-play-state: paused;
 }
 
+/* Trust network logo text */
+.trust-logo-text {
+  color: rgba(6,27,58,0.18);
+  transition: color 0.3s ease;
+}
+.trust-logo-text:hover { color: rgba(30,144,255,0.55); }
+.vd-dark .trust-logo-text { color: rgba(226,232,240,0.15); }
+.vd-dark .trust-logo-text:hover { color: rgba(56,189,248,0.6); }
+.vd-dark .trust-network-bar { background-color: #0A1628 !important; }
+
+/* ── Valedesk Dashboard Dark Mode ─────────────────────────── */
+.vd-dark .valedesk-light-grid {
+  background-image:
+    linear-gradient(rgba(30, 144, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 144, 255, 0.06) 1px, transparent 1px);
+}
+
+/* Main shell */
+.vd-dark [class*="bg-[#F4F8FF]"] { background-color: #0B1120 !important; }
+.vd-dark [class*="bg-white/90"] { background-color: rgba(15, 23, 42, 0.95) !important; }
+.vd-dark [class*="bg-white"] { background-color: #111827 !important; }
+
+/* Text */
+.vd-dark [class*="text-[#061B3A]"] { color: #E2E8F0 !important; }
+.vd-dark h1, .vd-dark h2, .vd-dark h3, .vd-dark h4 { color: #F1F5F9 !important; }
+.vd-dark p { color: #CBD5E1; }
+.vd-dark span { color: inherit; }
+
+/* Borders */
+.vd-dark [class*="border-sky-100"] { border-color: rgba(30, 144, 255, 0.12) !important; }
+.vd-dark [class*="border-sky-200"] { border-color: rgba(30, 144, 255, 0.18) !important; }
+
+/* Cards & surfaces */
+.vd-dark .rounded-2xl[class*="bg-white"] { background-color: #111827 !important; }
+.vd-dark .rounded-2xl[class*="shadow-"] { box-shadow: 0 16px 44px rgba(0,0,0,0.3) !important; }
+
+/* Inputs */
+.vd-dark input, .vd-dark select, .vd-dark textarea {
+  background-color: #1E293B !important;
+  color: #E2E8F0 !important;
+  border-color: rgba(30, 144, 255, 0.2) !important;
+}
+
+/* Sidebar */
+.vd-dark aside[class*="bg-white"] { background-color: #0F172A !important; }
+.vd-dark aside [class*="bg-sky-50"] { background-color: rgba(30, 144, 255, 0.1) !important; }
+
+/* Stat cards */
+.vd-dark [class*="bg-sky-50"] { background-color: rgba(30, 144, 255, 0.08) !important; }
+.vd-dark [class*="bg-rose-50"] { background-color: rgba(239, 68, 68, 0.08) !important; }
+.vd-dark [class*="bg-emerald-50"] { background-color: rgba(16, 185, 129, 0.08) !important; }
+.vd-dark [class*="bg-amber-50"] { background-color: rgba(245, 158, 11, 0.08) !important; }
+.vd-dark [class*="bg-purple-50"] { background-color: rgba(139, 92, 246, 0.08) !important; }
+
+/* Mobile header */
+.vd-dark header[class*="bg-white"] { background-color: #0F172A !important; }
+
+/* Scrollbar */
+.vd-dark ::-webkit-scrollbar { width: 6px; }
+.vd-dark ::-webkit-scrollbar-track { background: #0B1120; }
+.vd-dark ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 3px; }
+
+/* ── Dashboard: Notification badge ────────────────────────── */
+.vd-dark .notification-badge,
+.vd-dark [class*="bg-red-500"],
+.vd-dark [class*="bg-rose-500"] { color: #fff !important; }
+
+/* ── Dashboard: Buttons in bookings, profile, etc. ────────── */
+.vd-dark button[class*="border-sky-100"][class*="bg-white"] { background-color: #1E293B !important; color: #E2E8F0 !important; }
+.vd-dark button[class*="bg-[#1E90FF]"] { background-color: #1E90FF !important; color: #fff !important; }
+.vd-dark button[class*="border-sky-200"] { border-color: rgba(30,144,255,0.25) !important; background-color: #1E293B !important; color: #E2E8F0 !important; }
+.vd-dark [data-state="active"][class*="bg-[#1E90FF]"] { background-color: #1E90FF !important; color: #fff !important; }
+
+/* Calendar highlights & booking tabs */
+.vd-dark [class*="bg-blue-100"] { background-color: rgba(30,144,255,0.15) !important; }
+.vd-dark [class*="bg-blue-500"] { background-color: #1E90FF !important; }
+.vd-dark [class*="text-blue-600"] { color: #60A5FA !important; }
+.vd-dark [class*="bg-blue-50"] { background-color: rgba(30,144,255,0.08) !important; }
+.vd-dark [class*="ring-blue-"] { --tw-ring-color: rgba(30,144,255,0.4) !important; }
+
+/* Logout button in profile */
+.vd-dark button[class*="text-red-"] { color: #F87171 !important; }
+.vd-dark button[class*="hover:bg-red-"]:hover { background-color: rgba(239,68,68,0.12) !important; }
+
+/* Dashed borders and empty states */
+.vd-dark [class*="border-dashed"] { border-color: rgba(30,144,255,0.2) !important; }
+.vd-dark [class*="bg-white/75"] { background-color: rgba(17,24,39,0.75) !important; }
+
+/* Modals in dark mode */
+.vd-dark [class*="bg-[#061B3A]/30"] { background-color: rgba(0,0,0,0.5) !important; }
+.vd-dark .fixed[class*="bg-white"] { background-color: #1E293B !important; }
+
+/* Tabs (bookings, etc.) */
+.vd-dark [class*="rounded-full"][class*="border"][class*="bg-white"][class*="text-[#061B3A]"] {
+  background-color: #1E293B !important;
+  color: #94A3B8 !important;
+}
+
+/* ── Landing page dark mode ───────────────────────────────── */
+.vd-dark .landing-page { background-color: #050B18 !important; color: #E2E8F0; }
+.vd-dark .landing-page section[class*="bg-white"] { background-color: #0A1628 !important; }
+.vd-dark .landing-page section[class*="bg-[#F4F8FF]"] { background-color: #060E1F !important; }
+.vd-dark .landing-page [class*="border-sky-100"] { border-color: rgba(30,144,255,0.12) !important; }
+.vd-dark .landing-page [class*="border-sky-200"] { border-color: rgba(30,144,255,0.18) !important; }
+.vd-dark .landing-page [class*="text-[#061B3A]"] { color: #E2E8F0 !important; }
+.vd-dark .landing-page .cta-elevate { background: linear-gradient(135deg, #0B2D5C 0%, #0A1628 100%) !important; }
+.vd-dark .landing-page .hero-fade { background: linear-gradient(to top, #060E1F, transparent) !important; }
+
+/* Space cards and feature cards in dark mode */
+.vd-dark .landing-page .liquid-glass-strong { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.1) !important; }
+.vd-dark .landing-page div[class*="bg-white"][class*="rounded-2xl"] { background-color: #0D1B30 !important; }
+.vd-dark .landing-page div[class*="bg-sky-50"] { background-color: #0A1628 !important; }
+.vd-dark .landing-page footer { background-color: #030712 !important; }
+
+/* Navbar glassy override for dark mode */
+.vd-dark .landing-page nav[class*="bg-white/60"] {
+  background: rgba(6,27,58,0.75) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+
+/* ── Liquid Glass ─────────────────────────────────────────── */
+@layer components {
+  .liquid-glass {
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.12), 0 8px 32px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .liquid-glass-strong {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.18), 0 16px 48px rgba(0,0,0,0.12);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .liquid-glass-card {
+    background: rgba(255,255,255,0.03);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 12px 40px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .glass-image-frame {
+    border: 1.5px solid rgba(255,255,255,0.18);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.1);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .review-glass-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1.5px solid rgba(30,144,255,0.15);
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,0.9),
+      inset 0 -1px 1px rgba(30,144,255,0.04),
+      0 8px 32px rgba(30,144,255,0.08),
+      0 1px 3px rgba(0,0,0,0.06);
+  }
+  .review-glass-card:hover {
+    border-color: rgba(30,144,255,0.3);
+    box-shadow:
+      inset 0 1px 2px rgba(255,255,255,0.9),
+      inset 0 -1px 1px rgba(30,144,255,0.06),
+      0 24px 60px rgba(30,144,255,0.15),
+      0 1px 3px rgba(0,0,0,0.08);
+  }
+  /* Dark mode review glass */
+  .vd-dark .review-glass-card {
+    background: rgba(15,23,42,0.7);
+    border: 1.5px solid rgba(30,144,255,0.2);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.06),
+      inset 0 -1px 1px rgba(30,144,255,0.03),
+      0 8px 32px rgba(0,0,0,0.3),
+      0 0 0 1px rgba(30,144,255,0.06);
+  }
+  .vd-dark .review-glass-card:hover {
+    border-color: rgba(56,189,248,0.35);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.08),
+      0 24px 60px rgba(30,144,255,0.2),
+      0 0 0 1px rgba(56,189,248,0.15);
+  }
+}
+
+/* ── Timeline glow animation ──────────────────────────────── */
+@keyframes timeline-glow-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(30,144,255,0.4); }
+  50% { box-shadow: 0 0 24px rgba(30,144,255,0.7), 0 0 48px rgba(56,189,248,0.3); }
+}
+
+.timeline-dot-glow {
+  animation: timeline-glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes timeline-flow {
+  0% { background-position: 0 0; }
+  100% { background-position: 200% 0; }
+}
+
+.timeline-bar-animated {
+  background: linear-gradient(90deg, rgba(30,144,255,0.15), rgba(56,189,248,0.5), rgba(30,144,255,0.15));
+  background-size: 200% 100%;
+  animation: timeline-flow 3s linear infinite;
+  box-shadow: 0 0 16px rgba(30,144,255,0.3);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

@@ -7,6 +7,7 @@ import { hasSupabaseConfig } from '@/lib/env'
 import { useAuth } from '@/hooks/useAuth'
 import type { Booking, Room } from '@/types'
 import PromoCarousel from '@/components/PromoCarousel'
+import { getRoomImage } from '@/lib/roomImages'
 
 /* ── Sparkline bar chart (last 6 months of spend) ──────────────── */
 function SparklineChart({ data }: { data: number[] }) {
@@ -347,13 +348,11 @@ export default function DashboardHome() {
               <div className="mt-auto h-10 w-full animate-pulse rounded-full bg-sky-50" />
             </div>
           ) : recommended.length ? recommended.map((room) => {
-            const primaryImage = room.room_images?.find(img => img.is_primary)?.url
-              ?? room.room_images?.[0]?.url
-              ?? '/images/room-placeholder.jpg'
+            const roomImage = getRoomImage(room)
             return (
               <div key={room.id} className="overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_16px_44px_rgba(30,144,255,0.07)]">
                 <img
-                  src={primaryImage}
+                  src={roomImage}
                   alt={room.name}
                   className="aspect-video w-full rounded-t-xl object-cover"
                 />

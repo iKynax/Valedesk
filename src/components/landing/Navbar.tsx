@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, User as UserIcon } from 'lucide-react';
+import { Menu, X, User as UserIcon, Sun, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useDarkMode } from '@/hooks/useDarkMode';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [nearBottom, setNearBottom] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, profile, signOut } = useAuth();
+  const { dark, toggle } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,10 +26,10 @@ export default function Navbar() {
   }, []);
 
   const navClass = nearBottom
-    ? 'bg-[#061B3A]/95 border-b border-sky-300/15 py-3 h-18 shadow-[0_16px_50px_rgba(6,27,58,0.22)] backdrop-blur-xl'
+    ? 'mx-4 mt-3 rounded-2xl bg-[#061B3A]/80 border border-white/10 py-2.5 shadow-[0_8px_32px_rgba(6,27,58,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl'
     : scrolled
-      ? 'bg-white/88 border-b border-sky-200/70 py-3 h-20 shadow-[0_14px_44px_rgba(30,144,255,0.12)] backdrop-blur-xl'
-      : 'bg-transparent border-b border-transparent py-6 h-24';
+      ? 'mx-4 mt-3 rounded-2xl bg-white/60 border border-white/40 py-2.5 shadow-[0_8px_32px_rgba(30,144,255,0.08),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl'
+      : 'bg-transparent border-b border-transparent py-6';
 
   const darkMode = nearBottom;
   const textClass = darkMode ? 'text-white' : scrolled ? 'text-[#061B3A]' : 'text-white';
@@ -48,10 +50,18 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <a href="#spaces" className={`text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 border-transparent hover:border-[#1E90FF] pb-1 ${mutedClass}`}>Spaces</a>
           <a href="#features" className={`text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 border-transparent hover:border-[#1E90FF] pb-1 ${mutedClass}`}>About</a>
-          <a href="#pricing" className={`text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 border-transparent hover:border-[#1E90FF] pb-1 ${mutedClass}`}>Pricing</a>
+          <a href="#reviews" className={`text-[10px] font-bold uppercase tracking-widest transition-colors border-b-2 border-transparent hover:border-[#1E90FF] pb-1 ${mutedClass}`}>Reviews</a>
         </div>
 
         <div className="hidden md:flex items-center gap-4">
+          {/* Dark mode toggle */}
+          <button
+            onClick={toggle}
+            className={`flex items-center justify-center h-8 w-8 rounded-full transition-all ${dark ? 'bg-white/10 text-sky-300 hover:bg-white/20' : scrolled ? 'bg-sky-50 text-[#061B3A]/50 hover:text-[#1E90FF]' : 'bg-white/10 text-white/60 hover:text-white'}`}
+            title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
           {user ? (
             <>
               <div className={`flex items-center gap-2 mr-2 ${textClass}`}>
@@ -109,7 +119,7 @@ export default function Navbar() {
             <div className="flex flex-col gap-8 text-center mt-20">
               <a href="#spaces" onClick={() => setMobileMenuOpen(false)} className="text-[#061B3A]/55 hover:text-[#1E90FF] text-lg font-black uppercase tracking-widest">Spaces</a>
               <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-[#061B3A]/55 hover:text-[#1E90FF] text-lg font-black uppercase tracking-widest">About</a>
-              <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-[#061B3A]/55 hover:text-[#1E90FF] text-lg font-black uppercase tracking-widest">Pricing</a>
+              <a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="text-[#061B3A]/55 hover:text-[#1E90FF] text-lg font-black uppercase tracking-widest">Reviews</a>
             </div>
 
             <div className="mt-auto w-full max-w-sm flex flex-col gap-4">

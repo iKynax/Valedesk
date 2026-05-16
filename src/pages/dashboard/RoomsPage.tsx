@@ -1,11 +1,13 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Users, SlidersHorizontal } from 'lucide-react'
+import { Users, SlidersHorizontal, Heart } from 'lucide-react'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { useRooms } from '@/hooks/useRooms'
 import type { Room, RoomType } from '@/types'
 import { ROOM_TYPE_LABELS } from '@/types'
 import { getRoomImage } from '@/lib/roomImages'
+import { toggleFavourite, isFavourite } from '@/pages/dashboard/FavouritesPage'
 
 const typeFilters: RoomType[] = ['hot_desk', 'focus_pod', 'meeting_room', 'boardroom', 'event_space', 'private_office']
 
@@ -23,6 +25,7 @@ export default function RoomsPage() {
   const [minCapacity, setMinCapacity] = useState<number>(0)
   const [maxPrice, setMaxPrice] = useState<number>(500)
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
+  const [favRefresh, setFavRefresh] = useState(0)
 
   useEffect(() => {
     async function load() {
@@ -188,7 +191,22 @@ export default function RoomsPage() {
             const roomImage = getRoomImage(room)
             return (
               <Link key={room.id} to={`/dashboard/rooms/${room.id}`} className="group relative overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_16px_44px_rgba(30,144,255,0.07)] transition-transform hover:-translate-y-1">
-                <img src={roomImage} alt={room.name} className="aspect-video w-full rounded-t-xl object-cover" />
+                <div className="relative">
+                  <img src={roomImage} alt={room.name} className="aspect-video w-full rounded-t-xl object-cover" />
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      const added = toggleFavourite(room.id)
+                      setFavRefresh((c) => c + 1)
+                      toast.success(added ? `${room.name} added to favourites` : `${room.name} removed from favourites`)
+                    }}
+                    className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition-all hover:scale-110"
+                    title={isFavourite(room.id) ? 'Remove from favourites' : 'Add to favourites'}
+                  >
+                    <Heart className={`h-4 w-4 transition-colors ${isFavourite(room.id) ? 'fill-rose-500 text-rose-500' : 'text-slate-400 hover:text-rose-400'}`} />
+                  </button>
+                </div>
                 <div className="p-6">
                   <div className="mb-4 flex items-start justify-between gap-2">
                     <div className="min-w-0">
