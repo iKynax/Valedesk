@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { hasSupabaseConfig } from '@/lib/env'
 import { useAuth } from '@/hooks/useAuth'
 import type { Booking, Room } from '@/types'
+import PromoCarousel from '@/components/PromoCarousel'
 
 /* ── Sparkline bar chart (last 6 months of spend) ──────────────── */
 function SparklineChart({ data }: { data: number[] }) {
@@ -299,8 +300,8 @@ export default function DashboardHome() {
         </div>
       </div>
 
-      {/* ── Announcements Ticker ────────────────────────────────── */}
-      <AnnouncementsTicker />
+      {/* ── Promotional Carousel ─────────────────────────────────── */}
+      <PromoCarousel />
 
       {/* ── Upcoming Bookings + Recommended ─────────────────────── */}
       <div className="grid gap-8 lg:grid-cols-3">

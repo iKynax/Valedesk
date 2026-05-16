@@ -17,6 +17,7 @@ import { ADD_ONS } from '@/types'
 import BookingProgressBar from '@/components/BookingProgressBar'
 import BookingStepReview from '@/components/BookingStepReview'
 import BookingStepDetails from '@/components/BookingStepDetails'
+import StripePaymentForm from '@/components/StripePaymentForm'
 
 function generateReference() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
@@ -40,6 +41,7 @@ export default function BookRoomPage() {
   const [saving, setSaving] = useState(false)
   const [roomError, setRoomError] = useState('')
   const [copied, setCopied] = useState(false)
+  const [authToken, setAuthToken] = useState('')
 
   useEffect(() => {
     if (!roomId) return
@@ -48,6 +50,14 @@ export default function BookRoomPage() {
       setRoomError(error?.message || '')
     })
   }, [roomId])
+
+  // Load auth token for API calls
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getSession().then(({ data }) => {
+      setAuthToken(data.session?.access_token || '')
+    })
+  }, [])
 
   const start = useMemo(() => new Date(`${date}T${startTime}:00`), [date, startTime])
   const end = useMemo(() => endTime ? new Date(`${date}T${endTime}:00`) : addHours(start, 2), [date, endTime, start])
@@ -65,6 +75,13 @@ export default function BookRoomPage() {
     setAddOns(c => c.some(a => a.id === addOn.id) ? c.filter(a => a.id !== addOn.id) : [...c, addOn])
   }
 
+  // Get the Supabase access token for API calls
+  const getAccessToken = async () => {
+    const supabase = createClient()
+    const { data } = await supabase.auth.getSession()
+    return data.session?.access_token || ''
+  }
+
   const createBooking = async () => {
     if (!room || !user) { toast.error('Please sign in.'); return }
     if (!hasSupabaseConfig()) { toast.error('Supabase not configured.'); return }
@@ -74,22 +91,40 @@ export default function BookRoomPage() {
       if (!avail.available) { toast.error('Time slot no longer available.'); setStep(1); return }
       const reference = generateReference()
       const supabase = createClient()
-      const { data, error } = await supabase.from('bookings').insert({
+      const result = await (supabase.from('bookings') as any).insert({
         reference, user_id: user.id, room_id: room.id,
         start_time: start.toISOString(), end_time: end.toISOString(),
         status: 'confirmed', attendees, add_ons: addOns, notes,
         base_amount: pricing.baseRate, service_fee: pricing.service,
         total_amount: pricing.total, payment_status: 'paid', qr_data: reference,
-      } as any).select('*, rooms (*)').single()
-      if (error) throw error
+      }).select('*, rooms (*)').single()
+      if (result.error || !result.data) throw result.error || new Error('No booking data returned')
+      const bookingData = result.data as any
       await (supabase.from('notifications') as any).insert({
         user_id: user.id, type: 'booking_confirmed', title: 'Booking Confirmed',
         message: `Your booking for ${room.name} is confirmed.`,
-        metadata: { booking_id: data!.id, reference },
+        metadata: { booking_id: bookingData.id, reference },
       })
-      setBooking(data as Booking)
+      setBooking(bookingData as Booking)
       setStep(4)
       toast.success('Booking confirmed.')
+
+      // Send confirmation email after booking is confirmed — fire-and-forget, doesn't block UI
+      try {
+        const token = await getAccessToken()
+        const emailRes = await fetch('/api/bookings/send-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          // Pass attendees directly so server always has the full recipient list
+          body: JSON.stringify({ bookingId: bookingData.id, attendees }),
+        })
+        const emailData = await emailRes.json().catch(() => ({}))
+        if (emailData.sent > 0) {
+          toast.success(`Confirmation email sent to ${emailData.sent} recipient${emailData.sent > 1 ? 's' : ''}! 📧`)
+        }
+      } catch (emailErr) {
+        console.warn('Email sending failed (non-blocking):', emailErr)
+      }
     } catch (err: any) {
       toast.error(err?.message || 'Booking failed.')
     } finally { setSaving(false) }
@@ -143,35 +178,14 @@ export default function BookRoomPage() {
             )}
 
             {step === 3 && (
-              <div className="space-y-6">
-                {/* ─── STRIPE SETUP GUIDE ─────────────────────────────────────────────── */}
-                {/* 1. Go to https://dashboard.stripe.com/register and create a free account */}
-                {/* 2. In the Stripe Dashboard → Developers → API Keys */}
-                {/* 3. Copy your TEST publishable key (starts with pk_test_) */}
-                {/*    → paste into .env.local as VITE_STRIPE_PUBLISHABLE_KEY */}
-                {/* 4. Copy your TEST secret key (starts with sk_test_) */}
-                {/*    → paste into .env.local as STRIPE_SECRET_KEY */}
-                {/* 5. Restart your dev server: npm run dev */}
-                {/* 6. Test with card: 4242 4242 4242 4242 | Expiry: 12/30 | CVC: 123 */}
-                {/* ──────────────────────────────────────────────────────────────────────── */}
-                <div className="rounded-xl border border-sky-100 p-6">
-                  <div className="mb-2 flex items-center gap-2 text-xs text-slate-400">🔒 Secure Payment · Powered by Stripe</div>
-                  <h2 className="text-2xl font-black uppercase tracking-tight">Payment</h2>
-                  <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-xs text-blue-700">
-                    ℹ️ This is a demo environment. Your card will not be charged. Use test card: <strong>4242 4242 4242 4242</strong> · Expiry: 12/30 · CVC: 123
-                  </div>
-                  <p className="mt-4 text-sm text-[#061B3A]/60">
-                    Payment is processed as a demo. Click below to confirm your booking.
-                  </p>
-                </div>
-                <div className="flex gap-3">
-                  <Button onClick={() => setStep(2)} variant="outline" className="h-14 rounded-full px-8 text-xs font-black uppercase tracking-widest">Back</Button>
-                  <Button disabled={saving} onClick={createBooking}
-                    className="h-14 flex-1 rounded-full bg-[#1E90FF] text-xs font-black uppercase tracking-widest text-white hover:bg-[#0B5ED7]">
-                    {saving ? 'Processing...' : `🔒 Pay RM ${pricing.total.toFixed(2)}`}
-                  </Button>
-                </div>
-              </div>
+              <StripePaymentForm
+                amount={pricing.total}
+                roomName={room.name}
+                bookingReference={generateReference()}
+                authToken={authToken}
+                onBack={() => setStep(2)}
+                onSuccess={createBooking}
+              />
             )}
 
             {step === 4 && booking && (

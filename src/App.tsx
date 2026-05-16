@@ -12,6 +12,8 @@ import RoomDetailPage from './pages/dashboard/RoomDetailPage';
 import BookRoomPage from './pages/dashboard/BookRoomPage';
 import BookingsPage from './pages/dashboard/BookingsPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
+import FavouritesPage from './pages/dashboard/FavouritesPage';
+import NotificationsPage from './pages/dashboard/NotificationsPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './components/AuthProvider';
@@ -33,6 +35,8 @@ export default function App() {
             <Route path="book/:roomId" element={<BookRoomPage />} />
             <Route path="bookings" element={<BookingsPage />} />
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="favourites" element={<FavouritesPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
           </Route>
 
           {/* Admin Dashboard Routes */}

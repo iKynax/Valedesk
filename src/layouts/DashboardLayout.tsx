@@ -1,19 +1,70 @@
+import { useState, useEffect, useCallback } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Home, Search, Calendar, Heart, Bell, User, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { hasSupabaseConfig } from '@/lib/env';
+import { createClient } from '@/lib/supabase/client';
+import LogoutModal from '@/components/LogoutModal';
 
 export default function DashboardLayout() {
   const location = useLocation();
   const { profile, user, signOut } = useAuth();
+  const [showLogout, setShowLogout] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Load real unread notification count
+  useEffect(() => {
+    if (!user || !hasSupabaseConfig()) return;
+    const supabase = createClient();
+
+    // Initial load
+    supabase
+      .from('notifications')
+      .select('id', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .eq('read', false)
+      .then(({ count }) => {
+        if (count !== null) setUnreadCount(count);
+      });
+
+    // Realtime subscription for new notifications
+    const channel = supabase
+      .channel('sidebar-notif-count')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'notifications', filter: `user_id=eq.${user.id}` },
+        () => {
+          // Re-fetch count on any change
+          supabase
+            .from('notifications')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+            .eq('read', false)
+            .then(({ count }) => {
+              if (count !== null) setUnreadCount(count);
+            });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
 
   const navItems = [
     { name: 'Overview', path: '/dashboard', icon: Home },
     { name: 'Browse Spaces', path: '/dashboard/rooms', icon: Search },
     { name: 'My Bookings', path: '/dashboard/bookings', icon: Calendar },
-    { name: 'Favourites', path: '', icon: Heart },
-    { name: 'Notifications', path: '', icon: Bell, badge: 3 },
+    { name: 'Favourites', path: '/dashboard/favourites', icon: Heart },
+    { name: 'Notifications', path: '/dashboard/notifications', icon: Bell, badge: unreadCount || undefined },
     { name: 'Profile', path: '/dashboard/profile', icon: User },
   ];
+
+  const handleLogout = useCallback(() => {
+    setShowLogout(false);
+    signOut();
+  }, [signOut]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#F4F8FF] font-sans text-[#061B3A]">
@@ -63,7 +114,7 @@ export default function DashboardLayout() {
               <p className="truncate text-xs font-black uppercase">{profile?.full_name || user?.email || 'Valedesk User'}</p>
               <p className="truncate text-[10px] font-bold uppercase tracking-widest text-[#061B3A]/42">{profile?.job_title || profile?.company || 'Member'}</p>
             </div>
-            <button onClick={signOut} className="text-[#061B3A]/40 hover:text-[#1E90FF]">
+            <button onClick={() => setShowLogout(true)} className="text-[#061B3A]/40 hover:text-[#1E90FF]">
               <LogOut className="h-5 w-5" />
             </button>
           </div>
@@ -84,6 +135,13 @@ export default function DashboardLayout() {
           <Outlet />
         </div>
       </main>
+
+      {/* Logout Confirmation Modal */}
+      <LogoutModal
+        open={showLogout}
+        onClose={() => setShowLogout(false)}
+        onConfirm={handleLogout}
+      />
     </div>
   );
 }

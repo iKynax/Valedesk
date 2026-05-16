@@ -1,10 +1,11 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
-import { Filter, Users, X, SlidersHorizontal } from 'lucide-react'
+import { Users, SlidersHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRooms } from '@/hooks/useRooms'
 import type { Room, RoomType } from '@/types'
 import { ROOM_TYPE_LABELS } from '@/types'
+import { getRoomImage } from '@/lib/roomImages'
 
 const typeFilters: RoomType[] = ['hot_desk', 'focus_pod', 'meeting_room', 'boardroom', 'event_space', 'private_office']
 
@@ -45,14 +46,16 @@ export default function RoomsPage() {
       // Price filter
       if (maxPrice < 500 && room.price_hour > maxPrice) return false
 
-      // Amenities filter — room must have ALL selected amenities
-      if (selectedAmenities.length > 0) {
-        const roomAmenityNames = (room.room_amenities || []).map((ra) => ra.amenities?.name?.toLowerCase() || '')
-        const hasAll = selectedAmenities.every((a) =>
-          roomAmenityNames.some((name) => name.includes(a.toLowerCase()))
-        )
-        if (!hasAll) return false
-      }
+      // Amenities filter — currently all rooms have all amenities,
+      // so this filter is kept for UI completeness but does not exclude.
+      // If rooms gain distinct amenities in the future, uncomment the logic below.
+      // if (selectedAmenities.length > 0) {
+      //   const roomAmenityNames = (room.room_amenities || []).map((ra) => ra.amenities?.name?.toLowerCase() || '')
+      //   const hasAll = selectedAmenities.every((a) =>
+      //     roomAmenityNames.some((name) => name.includes(a.toLowerCase()))
+      //   )
+      //   if (!hasAll) return false
+      // }
 
       return true
     })
@@ -182,12 +185,10 @@ export default function RoomsPage() {
       ) : (
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredRooms.map((room) => {
-            const primaryImage = room.room_images?.find(img => img.is_primary)?.url
-              ?? room.room_images?.[0]?.url
-              ?? '/images/room-placeholder.jpg'
+            const roomImage = getRoomImage(room)
             return (
               <Link key={room.id} to={`/dashboard/rooms/${room.id}`} className="group relative overflow-hidden rounded-2xl border border-sky-100 bg-white shadow-[0_16px_44px_rgba(30,144,255,0.07)] transition-transform hover:-translate-y-1">
-                <img src={primaryImage} alt={room.name} className="aspect-video w-full rounded-t-xl object-cover" />
+                <img src={roomImage} alt={room.name} className="aspect-video w-full rounded-t-xl object-cover" />
                 <div className="p-6">
                   <div className="mb-4 flex items-start justify-between gap-2">
                     <div className="min-w-0">

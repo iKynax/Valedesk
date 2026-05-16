@@ -1,12 +1,13 @@
 import { useEffect, useState, useMemo } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
-import { CalendarDays, Users, Star, ChevronLeft, ChevronRight } from 'lucide-react'
+import { CalendarDays, Users, Star, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Button } from '@/components/ui/button'
 import { createClient } from '@/lib/supabase/client'
 import { hasSupabaseConfig } from '@/lib/env'
 import { getRoomSlotsForDay } from '@/lib/availability'
 import { useRooms } from '@/hooks/useRooms'
+import { getRoomImage } from '@/lib/roomImages'
 import type { Room } from '@/types'
 import { ROOM_TYPE_LABELS } from '@/types'
 import {
@@ -52,7 +53,7 @@ function MonthCalendar({
   const dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <div className="h-full rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
         <h3 className="font-[Syne] text-lg font-bold text-slate-800">
@@ -91,7 +92,7 @@ function MonthCalendar({
           const isToday = isSameDay(day, today)
           const isSelected = selectedDate && isSameDay(day, selectedDate)
 
-          let cellClass = 'relative flex h-10 w-full items-center justify-center rounded-lg text-sm transition-all '
+          let cellClass = 'relative flex h-9 w-full items-center justify-center rounded-lg text-sm transition-all '
 
           if (!inMonth) {
             cellClass += 'text-slate-200'
@@ -122,8 +123,8 @@ function MonthCalendar({
   )
 }
 
-/* ── Time Slot Grid Component ──────────────────────────────────── */
-function TimeSlotGrid({
+/* ── Time Slot Panel Component ─────────────────────────────────── */
+function TimeSlotPanel({
   slots,
   selectedStart,
   selectedEnd,
@@ -136,14 +137,6 @@ function TimeSlotGrid({
   onSlotClick: (slot: Date) => void
   selectedDate: Date
 }) {
-  const [rangeError, setRangeError] = useState('')
-
-  const handleClick = (slot: { time: Date; available: boolean }) => {
-    if (!slot.available) return
-    setRangeError('')
-    onSlotClick(slot.time)
-  }
-
   const isInRange = (slotTime: Date) => {
     if (!selectedStart || !selectedEnd) return false
     return slotTime > selectedStart && slotTime < selectedEnd
@@ -151,29 +144,42 @@ function TimeSlotGrid({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: 10 }}
+      animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
-      className="mt-6"
+      className="flex h-full flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
     >
-      <h4 className="mb-4 text-sm font-bold text-slate-700">
-        Available Times — <span className="text-blue-600">{format(selectedDate, 'EEEE, d MMMM yyyy')}</span>
-      </h4>
-      <div className="grid grid-cols-4 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10">
+      <div className="mb-4">
+        <h4 className="text-sm font-bold text-slate-700">
+          Available Times
+        </h4>
+        <p className="text-xs text-blue-600 font-semibold mt-0.5">
+          {format(selectedDate, 'EEEE, d MMMM yyyy')}
+        </p>
+        <p className="text-[10px] text-slate-400 mt-2">
+          {!selectedStart
+            ? '① Click a slot to set start time'
+            : !selectedEnd
+            ? '② Click another slot to set end time'
+            : '✓ Range selected — adjust below if needed'}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-3 gap-1.5 overflow-y-auto flex-1">
         {slots.map((slot) => {
           const timeStr = format(slot.time, 'HH:mm')
           const isStart = selectedStart && isSameDay(slot.time, selectedStart) && slot.time.getTime() === selectedStart.getTime()
           const isEnd = selectedEnd && isSameDay(slot.time, selectedEnd) && slot.time.getTime() === selectedEnd.getTime()
           const inRange = isInRange(slot.time)
 
-          let cls = 'rounded-xl px-2 py-2.5 text-center text-xs font-semibold transition-all '
+          let cls = 'rounded-xl px-1.5 py-2 text-center text-xs font-semibold transition-all '
 
           if (!slot.available) {
             cls += 'bg-slate-100 text-slate-300 border border-slate-200 line-through cursor-not-allowed'
           } else if (isStart) {
-            cls += 'bg-[#2563EB] text-white border-2 border-blue-700 font-bold scale-105'
+            cls += 'bg-[#2563EB] text-white border-2 border-blue-700 font-bold'
           } else if (isEnd) {
-            cls += 'bg-[#1D4ED8] text-white border-2 border-blue-800 font-bold scale-105'
+            cls += 'bg-[#1D4ED8] text-white border-2 border-blue-800 font-bold'
           } else if (inRange) {
             cls += 'bg-blue-100 text-blue-700 border border-blue-200'
           } else {
@@ -183,10 +189,10 @@ function TimeSlotGrid({
           return (
             <button
               key={slot.time.toISOString()}
-              onClick={() => handleClick(slot)}
+              onClick={() => slot.available && onSlotClick(slot.time)}
               disabled={!slot.available}
               className={cls}
-              title={!slot.available ? 'This slot is already booked' : ''}
+              title={!slot.available ? 'Slot already booked' : ''}
             >
               {timeStr}
               {isStart && <div className="mt-0.5 text-[8px] font-bold">START</div>}
@@ -195,7 +201,6 @@ function TimeSlotGrid({
           )
         })}
       </div>
-      {rangeError && <p className="mt-2 text-xs font-bold text-red-500">{rangeError}</p>}
     </motion.div>
   )
 }
@@ -219,6 +224,9 @@ export default function RoomDetailPage() {
 
   // Similar spaces
   const [similarRooms, setSimilarRooms] = useState<Room[]>([])
+
+  // Validation state for "Book This Space" button
+  const [showValidation, setShowValidation] = useState(false)
 
   useEffect(() => {
     async function loadRoom() {
@@ -269,6 +277,14 @@ export default function RoomDetailPage() {
         setRangeError('End time must be after start time')
         return
       }
+      // Validate no booked slots exist between start and end
+      const hasBookedSlotInRange = slots.some(
+        (s) => s.time > selectedStart! && s.time < slotTime && !s.available
+      )
+      if (hasBookedSlotInRange) {
+        setRangeError('Cannot book across already-booked time slots. Please select a continuous available range.')
+        return
+      }
       setSelectedEnd(slotTime)
       setClickCount(2)
     } else {
@@ -284,6 +300,7 @@ export default function RoomDetailPage() {
     setSelectedEnd(null)
     setClickCount(0)
     setRangeError('')
+    setShowValidation(false)
   }
 
   // Booking summary calculations
@@ -300,11 +317,23 @@ export default function RoomDetailPage() {
     }
   }, [selectedStart, selectedEnd, room, selectedDate])
 
+  const handleBookThisSpace = () => {
+    if (!bookingSummary) {
+      setShowValidation(true)
+      // Scroll to availability section
+      document.getElementById('availability-section')?.scrollIntoView({ behavior: 'smooth' })
+      return
+    }
+    navigate(
+      `/dashboard/book/${room!.id}?date=${format(selectedDate!, 'yyyy-MM-dd')}&start=${bookingSummary.start}&end=${bookingSummary.end}`
+    )
+  }
+
   if (error) return <div className="rounded-2xl border border-amber-200 bg-amber-50 p-8 text-sm font-bold text-amber-800">{error}</div>
   if (!room) return <div className="h-96 animate-pulse rounded-2xl bg-white" />
 
-  const images = room.room_images?.sort((a, b) => Number(b.is_primary) - Number(a.is_primary) || a.sort_order - b.sort_order) || []
-  const primaryImage = images[0]?.url || '/images/room-placeholder.jpg'
+  const primaryImage = getRoomImage(room)
+  const extraImages = room.room_images?.sort((a, b) => Number(b.is_primary) - Number(a.is_primary) || a.sort_order - b.sort_order).slice(1, 4) || []
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -321,9 +350,13 @@ export default function RoomDetailPage() {
       <div className="grid gap-8 lg:grid-cols-[1.3fr_0.7fr]">
         <div className="space-y-5">
           <img src={primaryImage} alt={room.name} className="h-[420px] w-full rounded-2xl border border-sky-100 object-cover" />
-          <div className="grid grid-cols-3 gap-4">
-            {images.slice(1, 4).map((image) => <img key={image.id} src={image.url} alt={image.alt_text || room.name} className="h-28 w-full rounded-xl border border-sky-100 object-cover" />)}
-          </div>
+          {extraImages.length > 0 && (
+            <div className="grid grid-cols-3 gap-4">
+              {extraImages.map((image) => (
+                <img key={image.id} src={image.url} alt={image.alt_text || room.name} className="h-28 w-full rounded-xl border border-sky-100 object-cover" />
+              ))}
+            </div>
+          )}
         </div>
         <aside className="rounded-2xl border border-sky-100 bg-white p-6 shadow-[0_16px_44px_rgba(30,144,255,0.07)]">
           <p className="text-[10px] font-black uppercase tracking-widest text-[#1E90FF]">{ROOM_TYPE_LABELS[room.type]}</p>
@@ -337,61 +370,91 @@ export default function RoomDetailPage() {
             <p className="text-[10px] font-black uppercase tracking-widest text-[#061B3A]/42">Starting from</p>
             <p className="mt-1 text-4xl font-black tracking-tighter">RM{room.price_hour}<span className="text-sm tracking-normal text-[#061B3A]/45">/hr</span></p>
           </div>
-          <Button className="mt-6 h-14 w-full rounded-full bg-[#1E90FF] text-xs font-black uppercase tracking-widest text-white hover:bg-[#0B5ED7]" onClick={() => navigate(`/dashboard/book/${room.id}`)}>
-            Book This Space
+
+          {/* Validation hint */}
+          {showValidation && !bookingSummary && (
+            <div className="mt-4 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-bold text-amber-700">
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
+              Please select a date and time slot in the Availability section below before booking.
+            </div>
+          )}
+
+          <Button
+            className={`mt-4 h-14 w-full rounded-full text-xs font-black uppercase tracking-widest text-white transition-all ${
+              bookingSummary
+                ? 'bg-[#1E90FF] hover:bg-[#0B5ED7] shadow-lg shadow-blue-200'
+                : 'bg-[#1E90FF]/70 hover:bg-[#1E90FF]'
+            }`}
+            onClick={handleBookThisSpace}
+          >
+            {bookingSummary ? `Book · ${bookingSummary.start}–${bookingSummary.end} · RM${bookingSummary.price.toFixed(0)}` : 'Book This Space'}
           </Button>
+
+          {!bookingSummary && (
+            <p className="mt-2 text-center text-[10px] text-slate-400">
+              ↓ Select a date &amp; time below first
+            </p>
+          )}
         </aside>
       </div>
 
-      {/* ── Availability Calendar ────────────────────────────── */}
-      <section className="space-y-6">
+      {/* ── Availability Calendar ─────────────────────────────── */}
+      <section id="availability-section" className="space-y-4">
         <h2 className="text-2xl font-black uppercase tracking-tighter">Availability</h2>
 
-        <MonthCalendar
-          selectedDate={selectedDate}
-          onSelectDate={handleDateSelect}
-          currentMonth={currentMonth}
-          onMonthChange={setCurrentMonth}
-        />
-
-        {selectedDate && slots.length > 0 && (
-          <TimeSlotGrid
-            slots={slots}
-            selectedStart={selectedStart}
-            selectedEnd={selectedEnd}
-            onSlotClick={handleSlotClick}
+        {/* Side-by-side: calendar left, time slots right */}
+        <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
+          {/* Left: Month Calendar */}
+          <MonthCalendar
             selectedDate={selectedDate}
+            onSelectDate={handleDateSelect}
+            currentMonth={currentMonth}
+            onMonthChange={setCurrentMonth}
           />
-        )}
+
+          {/* Right: Time slots (or prompt) */}
+          {selectedDate && slots.length > 0 ? (
+            <TimeSlotPanel
+              slots={slots}
+              selectedStart={selectedStart}
+              selectedEnd={selectedEnd}
+              onSlotClick={handleSlotClick}
+              selectedDate={selectedDate}
+            />
+          ) : (
+            <div className="flex items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-slate-50 p-8 text-center">
+              <div>
+                <CalendarDays className="mx-auto mb-3 h-10 w-10 text-slate-300" />
+                <p className="text-sm font-bold text-slate-400">
+                  {!selectedDate ? 'Select a date to see available times' : 'Connecting to live slot data…'}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
 
         {rangeError && <p className="text-xs font-bold text-red-500">{rangeError}</p>}
 
-        {selectedDate && !slots.length && (
-          <p className="text-sm font-bold text-[#061B3A]/50">Connect Supabase to see live slots.</p>
-        )}
-
-        {/* ── Booking Summary Strip ──────────────────────────── */}
+        {/* ── Booking Summary Strip ─────────────────────────── */}
         <AnimatePresence>
           {bookingSummary && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              exit={{ opacity: 0, y: 16 }}
               transition={{ duration: 0.3 }}
-              className="rounded-xl bg-[#0A1628] p-5 text-white"
+              className="rounded-2xl bg-[#0A1628] p-5 text-white"
             >
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <span className="font-bold">{room.name}</span>
-                  <span className="text-slate-400">·</span>
-                  <span>{bookingSummary.date}</span>
-                  <span className="text-slate-400">·</span>
-                  <span>{bookingSummary.start} → {bookingSummary.end}</span>
-                  <span className="text-slate-400">·</span>
-                  <span>{bookingSummary.duration} hrs</span>
-                  <span className="text-slate-400">·</span>
-                  <span className="font-bold text-blue-400">RM{bookingSummary.price.toFixed(2)}</span>
-                </div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                <span className="font-bold">{room.name}</span>
+                <span className="text-slate-400">·</span>
+                <span>{bookingSummary.date}</span>
+                <span className="text-slate-400">·</span>
+                <span>{bookingSummary.start} → {bookingSummary.end}</span>
+                <span className="text-slate-400">·</span>
+                <span>{bookingSummary.duration} hrs</span>
+                <span className="text-slate-400">·</span>
+                <span className="font-bold text-blue-400">RM{bookingSummary.price.toFixed(2)}</span>
               </div>
               <Button
                 onClick={() =>
@@ -412,9 +475,7 @@ export default function RoomDetailPage() {
           <h2 className="text-2xl font-black uppercase tracking-tighter">You might also like</h2>
           <div className="flex gap-6 overflow-x-auto pb-4">
             {similarRooms.map((sim) => {
-              const simImage = sim.room_images?.find(img => img.is_primary)?.url
-                ?? sim.room_images?.[0]?.url
-                ?? '/images/room-placeholder.jpg'
+              const simImage = getRoomImage(sim)
               return (
                 <Link
                   key={sim.id}

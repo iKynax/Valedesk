@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { createClient } from '@/lib/supabase/client'
 import { useAuth } from '@/hooks/useAuth'
+import LogoutModal from '@/components/LogoutModal'
 import type { UserProfile } from '@/types'
 
 export default function ProfilePage() {
   const { user, profile, signOut } = useAuth()
   const [form, setForm] = useState<Partial<UserProfile>>({})
   const [saving, setSaving] = useState(false)
+  const [showLogout, setShowLogout] = useState(false)
 
   useEffect(() => {
     if (profile) setForm(profile)
@@ -70,7 +72,7 @@ export default function ProfilePage() {
             <Upload className="h-4 w-4" /> Upload
             <input type="file" accept="image/*" hidden onChange={(event) => event.target.files?.[0] && uploadAvatar(event.target.files[0])} />
           </label>
-          <Button onClick={() => window.confirm('Sign out?') && signOut()} variant="outline" className="mt-4 w-full rounded-full border-sky-200 text-[10px] font-black uppercase tracking-widest"><LogOut className="mr-2 h-4 w-4" /> Logout</Button>
+          <Button onClick={() => setShowLogout(true)} variant="outline" className="mt-4 w-full rounded-full border-sky-200 text-[10px] font-black uppercase tracking-widest"><LogOut className="mr-2 h-4 w-4" /> Logout</Button>
         </aside>
 
         <main className="rounded-2xl border border-sky-100 bg-white p-6 shadow-[0_16px_44px_rgba(30,144,255,0.07)]">
@@ -92,6 +94,8 @@ export default function ProfilePage() {
           <Button disabled={saving} onClick={save} className="mt-8 h-12 rounded-full bg-[#1E90FF] px-8 text-xs font-black uppercase tracking-widest text-white hover:bg-[#0B5ED7]"><Save className="mr-2 h-4 w-4" />{saving ? 'Saving...' : 'Save Profile'}</Button>
         </main>
       </div>
+
+      <LogoutModal open={showLogout} onClose={() => setShowLogout(false)} onConfirm={() => { setShowLogout(false); signOut() }} />
     </div>
   )
 }
