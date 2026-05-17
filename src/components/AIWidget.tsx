@@ -150,7 +150,7 @@ export default function AIWidget() {
           'X-Title': 'Valedesk AI',
         },
         body: JSON.stringify({
-          model: 'openai/gpt-4o-mini',
+          model: 'deepseek/deepseek-v4-flash:free',
           messages: conversationHistory.map(m => ({ role: m.role, content: m.content })),
           max_tokens: 300,
           temperature: 0.7,

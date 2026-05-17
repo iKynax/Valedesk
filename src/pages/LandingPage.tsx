@@ -380,6 +380,7 @@ export default function LandingPage() {
             <a href="#reviews" className="hover:text-white">Reviews</a>
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
+            <Link to="/admin/access" className="text-slate-600 hover:text-slate-400 hover:underline">Admin Portal</Link>
             <span>Copyright {new Date().getFullYear()} Valedesk Inc.</span>
           </div>
         </div>

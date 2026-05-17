@@ -26,9 +26,9 @@ export default function Navbar() {
   }, []);
 
   const navClass = nearBottom
-    ? 'mx-auto w-fit mt-3 rounded-full bg-[#061B3A]/80 border border-white/10 py-2.5 shadow-[0_8px_32px_rgba(6,27,58,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl'
+    ? 'mx-auto max-w-7xl mt-3 rounded-full bg-[#061B3A]/80 border border-white/10 py-2.5 shadow-[0_8px_32px_rgba(6,27,58,0.4),inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-xl'
     : scrolled
-      ? 'mx-auto w-fit mt-3 rounded-full bg-white/60 border border-white/40 py-2.5 shadow-[0_8px_32px_rgba(30,144,255,0.08),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl'
+      ? 'mx-auto max-w-7xl mt-3 rounded-full bg-white/60 border border-white/40 py-2.5 shadow-[0_8px_32px_rgba(30,144,255,0.08),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl'
       : 'bg-transparent border-b border-transparent py-6';
 
   const darkMode = nearBottom;
@@ -37,7 +37,7 @@ export default function Navbar() {
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${navClass}`}>
-      <div className={`mx-auto flex items-center justify-between h-full ${scrolled || nearBottom ? 'px-5 gap-8' : 'max-w-7xl px-6 sm:px-8 lg:px-12'}`}>
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-full">
         
         <Link to="/" className={`${textClass} font-black uppercase tracking-tighter text-3xl flex items-center gap-2 transition-colors`}>
           <span className="w-6 h-6 bg-[#1E90FF] rounded-md flex items-center justify-center shadow-[0_0_24px_rgba(30,144,255,0.45)]">

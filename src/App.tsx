@@ -14,7 +14,15 @@ import BookingsPage from './pages/dashboard/BookingsPage';
 import ProfilePage from './pages/dashboard/ProfilePage';
 import FavouritesPage from './pages/dashboard/FavouritesPage';
 import NotificationsPage from './pages/dashboard/NotificationsPage';
+import AdminAccessPage from './pages/admin/AdminAccessPage';
+import AdminAuthPage from './pages/admin/AdminAuthPage';
 import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminAnalyticsPage from './pages/admin/AdminAnalyticsPage';
+import AdminBookingsPage from './pages/admin/AdminBookingsPage';
+import AdminRoomsPage from './pages/admin/AdminRoomsPage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
+import AdminPromotionsPage from './pages/admin/AdminPromotionsPage';
+import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './components/AuthProvider';
 import { DarkModeProvider } from './hooks/useDarkMode';
@@ -41,9 +49,19 @@ export default function App() {
             <Route path="notifications" element={<NotificationsPage />} />
           </Route>
 
+          {/* Admin Access & Auth (public — guarded internally) */}
+          <Route path="/admin/access" element={<AdminAccessPage />} />
+          <Route path="/admin/auth" element={<AdminAuthPage />} />
+
           {/* Admin Dashboard Routes */}
           <Route path="/admin" element={<ProtectedRoute adminOnly><AdminLayout /></ProtectedRoute>}>
              <Route index element={<AdminDashboardPage />} />
+             <Route path="analytics" element={<AdminAnalyticsPage />} />
+             <Route path="bookings" element={<AdminBookingsPage />} />
+             <Route path="rooms" element={<AdminRoomsPage />} />
+             <Route path="users" element={<AdminUsersPage />} />
+             <Route path="promotions" element={<AdminPromotionsPage />} />
+             <Route path="settings" element={<AdminSettingsPage />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/" replace />} />
