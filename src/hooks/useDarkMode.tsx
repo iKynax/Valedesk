@@ -6,7 +6,7 @@ interface DarkModeContextType {
   toggle: () => void
 }
 
-const DarkModeContext = createContext<DarkModeContextType>({ dark: true, toggle: () => {} })
+const DarkModeContext = createContext<DarkModeContextType>({ dark: false, toggle: () => {} })
 
 const STORAGE_KEY = 'valedesk-dark-mode'
 
@@ -14,10 +14,10 @@ export function DarkModeProvider({ children }: { children: ReactNode }) {
   const [dark, setDark] = useState(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      // Default to dark if no preference saved
-      return stored === null ? true : stored === 'true'
+      // Default to light if no preference saved
+      return stored === null ? false : stored === 'true'
     } catch {
-      return true
+      return false
     }
   })
 

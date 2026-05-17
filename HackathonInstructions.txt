@@ -1,0 +1,193 @@
+Shortcut Asia Internship Challenge 2026
+Build an app and get hired!
+This is your entry to intern at Shortcut Asia. No traditional interviews. Just build an app in two
+weeks, and walk us through how you built it.
+The best part: the project is yours to keep as a portfolio piece.
+Update: Due to the large number of applications we've received from the APU Mega Career
+Fair, we've shortened the build period from two weeks to one week so we can move through
+selections faster. The new submission deadline is 15 May 2026, 11:59pm.
+What you're building toward
+This challenge is your path into a paid internship where you work on real software for real
+clients.
+Details
+● Duration: 3 months (flexible based on your university's requirements)
+● Allowance: RM2,000/month
+● Arrangement: On-site (Office near LRT Bangsar)
+● For: Students in CS, IT, Software Engineering, or related fields
+● Start dates: July–August 2026 or November 2026–February 2027
+The work
+Our interns don't fetch coffee. You join a product team and contribute to live client projects,
+building features, writing tests, shipping code that real users interact with. Past and current
+intern projects have included work on:
+● Banking and fintech platforms
+● E-commerce applications
+● Transport and logistics systems
+● AI-powered product features
+How it works
+1. Pick a topic (or propose your own)
+2. Build it in one week
+3. Submit by May 15, 2026, 11:59pm
+4. Get shortlisted
+5. Pitch your product to the team at our office (Date to be confirmed)
+Topics
+We've outlined five topics below, but you're not limited to these. If you have a better idea or want
+to put your own spin on something, go for it. We want to see what excites you.
+1. Smart Habit Tracker
+A simple app to build and track daily habits with reminders.
+Key features:
+● Daily streaks and progress tracking with a visual tracker
+● Custom reminders per habit
+2. Expense Splitter
+An app to split bills among friends for meals, trips, or shared costs.
+Key features:
+● Group expense tracker with multiple users and shared expenses
+● Auto-split and balance calculation showing who owes what
+3. Campus Task Manager
+A lightweight to-do app designed for student life and coursework.
+Key features:
+● Class-based task categories organised by subject or course
+● Due date alerts and reminders for upcoming assignments
+4. Peer Feedback Platform
+A web app for students to give and receive anonymous feedback in group projects.
+Key features:
+● Anonymous feedback forms linked to group members
+● Feedback summary view with aggregated input per student
+5. Simple Booking System
+A web app for booking shared resources like meeting rooms, lab equipment, or study pods.
+Key features:
+● Availability calendar with selectable time slots per resource
+● Booking management with create, edit, and cancel functionality
+What we’re looking for
+We care about how you think, not just what you build.
+Functionality: Does it work? Does it solve the problem it set out to solve?
+Code quality: Is your code clean, readable, and reasonably structured? We're not expecting
+perfection, we're looking for good habits.
+Problem-solving: How did you handle edge cases, tricky decisions, or things that didn't go as
+planned?
+Communication: Can you explain what you built, why you made the choices you made, and
+what you'd improve with more time? This matters as much as the code itself.
+Tech stack is your call. Web, mobile, desktop—use whatever you're comfortable with.
+Submission requirements
+1. Working application hosted online or with clear setup instructions so we can run it
+2. Source code: GitHub repository (public or invite us)
+3. Brief documentation of your approach, challenges you faced, and how to run the app
+4. Demo video to show your app in action, walk us through the key decisions
+Submit everything through: https://forms.gle/bTCqepJRpJYqYvkH6
+Timeline
+What When
+Build period 8 May–15 May 2026 (1 week)
+Open Q&A sessions (15
+mins)
+11 May: 10:30am & 2:00pm
+Submission deadline 15 May 2026, 11:59pm
+Ready?
+Pick a topic. Start building. Show us what you've got.
+Submission deadline: 15 May 2026, 11:59pm
+shortcut.my
+FAQ
+1. Submission Requirements
+Q: Do we need to build a new project, or can we submit a previous one?
+You must build a new project from scratch.
+Q: Who will own the work?
+You will have full ownership of everything you build.
+This is your project. You’re free to use it as a portfolio piece for future applications,
+continue improving it after the challenge, or even turn it into something bigger.
+Q: Do we need to submit both documentation and a working prototype? What
+exactly should be included?
+Yes. You are required to submit both a functional prototype and supporting documentation.
+By the end of the two-week build period, you should have a working product that you can
+showcase during your demo. Your submission should demonstrate not only what you built, but
+how you approached the problem.
+Your final submission must include:
+1. Functional Prototype
+● A working version of your app (PLC/prototype)
+● A deployed build if possible (e.g., Vercel, Netlify)
+2. Codebase
+● A link to your GitHub/GitLab/Bitbucket repo
+● Complex logic clearly documented in the repository
+3. Demo Video
+● A short walkthrough of your app
+● 3–5 minutes is recommended, but not a strict limit
+● Focus on features, functionality, and your process
+4. Documentation (How in-depth should it be?)
+Documentation should be 1–2 pages and focused on your thought process
+Suggested elements to include:
+● How you planned and approached the app
+● Why you chose certain tools, frameworks, or libraries
+● Your main technical decisions and reasoning
+● 1–2 flowcharts for key feature flows
+● A simple technical architecture overview
+● The tech stack used
+Q: Do we have to follow the suggested topics?
+No, the provided topics are just examples. You’re free to use them or propose your own
+idea, as long as it fits the overall theme of the program and can be built within the given
+timeframe.
+Q: Is there a preferred tech stack or framework?/ Is there a required programming
+language (e.g., Java, Python)?
+No strict requirement.
+● TypeScript is recommended
+● Use whatever framework or stack you’re comfortable with
+● Ensure you can deliver within the timeline
+Q: Are two key features enough?
+Yes. Two main key features are sufficient, but you may add more if it strengthens your
+app and is feasible within the two-week timeframe. Focus on impactful, realistic features
+rather than overly complex ones.
+You are free to enhance your app with:
+● Additional key features
+● Better UI/UX
+● Unique selling points
+● Creative ideas
+Q: Can the app be a CLI instead of a GUI?
+Yes. Mobile, web, desktop, or CLI are all acceptable.
+Justify your choice by explaining:
+● The use case
+● Who the target user is
+● Why the chosen interface makes sense
+Q: Should we go deeper or broader in functionality?
+Go deeper, not broader. Because the timeline is short, it’s better to build 2 solid,
+well-developed features rather than 10 half-baked features
+Q: Can we build both a web app and a complementary mobile app?
+Yes, as long as you can complete it within the deadline, multiple platforms are allowed.
+2. Presentation and Demo
+Q: How long should the video demo be?
+3–5 minutes would be ideal, but there’s no strict limit. Focus on clearly presenting:
+● What you built
+● How it works
+● Why you made certain decisions
+Q: Do we need to show our face in the recorded demo?
+No, face is optional. A voice-over is recommended for clarity.
+Q: How do I submit the video?
+You may upload your video to:
+● YouTube (unlisted), or
+● Google Drive
+Then share the link in your submission.
+3. Evaluation Criteria
+Q: What carries the most weight in scoring?
+Projects will be judged on three main levels:
+1. Code level
+We’ll review your source code for structure, clarity, problem-solving logic, and
+implementation quality. Submit a GitHub repo and make sure complex logic is
+documented.
+2. Product level
+We’ll assess how well your app functions and whether it solves the chosen
+problem effectively. Creative and user-centered solutions are encouraged.
+3. Presentation and documentation
+We’ll look at how effectively you communicate your ideas. This includes your
+ability to present the project clearly and your supporting documentation that helps
+us understand your thinking and execution.
+Q: Is the evaluation focused purely on technical functionality, or will UX and
+design also play a role?
+Ultimately, we build products—so functionality is key, and you’ll need to show strong
+technical ability. But usability and the overall user experience are just as important. So
+yes, we evaluate both the technical side and how well the product works for users.
+Q: Will we score higher if we follow the suggested topics?
+Not necessarily.
+The five topics are examples. You may:
+● Build your own topic
+● Propose something entirely different
+● Choose any idea that you can complete in time
+All submissions, whether based on suggested topics or self-proposed ones, are
+evaluated the same way.
+Q: Does picking your own topic carry extra weight?
+No extra weight. However, creativity is one of the evaluation criteria, so unique
+problem-solving can help you stand out.
