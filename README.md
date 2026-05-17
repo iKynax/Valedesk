@@ -161,8 +161,8 @@ npx netlify deploy --prod --dir=dist
 
 | Role | Email | Password | Access Code |
 |------|-------|----------|-------------|
-| Admin | admin1@gmail.com | 123456 | VDADM1 |
-| Member | *(sign up via the app)* | — | — |
+| Admin | admin1@gmail.com | abc123 | VDADM1 |
+| Member | joeking@gmail.com | abc123 | — |
 
 ---
 
