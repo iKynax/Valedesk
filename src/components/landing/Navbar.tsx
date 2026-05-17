@@ -43,7 +43,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-full">
         
         <Link to="/" className="flex items-center transition-opacity hover:opacity-80">
-          <ValedeskLogo variant={needsDarkLogo ? 'dark' : 'light'} className="h-9" />
+          <ValedeskLogo variant={needsDarkLogo ? 'dark' : 'light'} className="h-12" />
         </Link>
         
         {/* Desktop Nav */}
@@ -105,7 +105,7 @@ export default function Navbar() {
             className="fixed inset-0 z-50 bg-white valedesk-light-grid p-6 flex flex-col items-center justify-center"
           >
             <div className="absolute top-6 left-6 right-6 flex justify-between items-center">
-              <ValedeskLogo variant="light" className="h-9" />
+              <ValedeskLogo variant="light" className="h-12" />
               <button className="text-[#061B3A] p-2 border border-sky-200 hover:bg-sky-50 rounded-full" onClick={() => setMobileMenuOpen(false)} aria-label="Close navigation menu">
                 <X className="w-6 h-6" />
               </button>

@@ -111,7 +111,7 @@ export default function AdminAuthPage() {
           {/* Logo */}
           <div className="mb-6 flex flex-col items-center">
             <div className="mb-3">
-              <ValedeskLogo variant="dark" className="h-9" />
+              <ValedeskLogo variant="dark" className="h-12" />
             </div>
             <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'Syne, sans-serif' }}>
               Admin Authentication

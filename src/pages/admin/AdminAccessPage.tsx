@@ -91,7 +91,7 @@ export default function AdminAccessPage() {
           {/* Logo */}
           <div className="mb-8 flex flex-col items-center">
             <div className="mb-4">
-              <ValedeskLogo variant="dark" className="h-9" />
+              <ValedeskLogo variant="dark" className="h-12" />
             </div>
             <ShieldCheck className="mb-4 h-10 w-10 text-[#2563EB]" />
             <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Syne, sans-serif' }}>

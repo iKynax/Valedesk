@@ -72,10 +72,10 @@ export default function AdminLayout() {
       <div className={`flex h-16 items-center border-b border-white/8 ${collapsed ? 'justify-center px-2' : 'px-5'}`}>
         <Link to="/" className="flex items-center gap-2 min-w-0">
           {collapsed ? (
-            <img src="/images/logo-dark.png" alt="Valedesk" className="h-8 w-8 object-contain object-left" />
+            <img src="/images/logo-dark.png" alt="Valedesk" className="h-10 w-10 object-contain object-left" />
           ) : (
             <>
-              <ValedeskLogo variant="dark" className="h-8 shrink-0" />
+              <ValedeskLogo variant="dark" className="h-10 shrink-0" />
               <span className="shrink-0 rounded-full bg-[#2563EB] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">Admin</span>
             </>
           )}

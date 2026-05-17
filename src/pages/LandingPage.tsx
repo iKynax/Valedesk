@@ -372,7 +372,7 @@ export default function LandingPage() {
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="mb-2">
-              <ValedeskLogo variant="dark" className="h-9" />
+              <ValedeskLogo variant="dark" className="h-12" />
             </div>
             <p className="text-sm font-medium text-white/48">Your space. Your schedule. Your flow.</p>
           </div>

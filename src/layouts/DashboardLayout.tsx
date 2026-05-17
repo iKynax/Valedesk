@@ -71,7 +71,7 @@ function DashboardShell() {
       <aside className="hidden w-[280px] shrink-0 flex-col border-r border-sky-100 bg-white/90 shadow-[12px_0_40px_rgba(30,144,255,0.06)] md:flex">
         <div className="flex h-20 items-center border-b border-sky-100 bg-white px-8">
           <Link to="/" className="flex items-center">
-            <ValedeskLogo variant={dark ? 'dark' : 'light'} className="h-9" />
+            <ValedeskLogo variant={dark ? 'dark' : 'light'} className="h-12" />
           </Link>
         </div>
 
@@ -122,7 +122,7 @@ function DashboardShell() {
         <header className="flex h-16 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-6">
           {/* Mobile logo */}
           <Link to="/" className="flex items-center md:hidden">
-            <ValedeskLogo variant={dark ? 'dark' : 'light'} className="h-8" />
+            <ValedeskLogo variant={dark ? 'dark' : 'light'} className="h-10" />
           </Link>
 
           {/* Spacer for desktop */}
