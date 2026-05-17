@@ -202,5 +202,4 @@ app.listen(PORT, () => {
   if (!process.env.STRIPE_SECRET_KEY) console.warn('  ⚠ STRIPE_SECRET_KEY not set')
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) console.warn('  ⚠ SMTP_USER / SMTP_PASS not set — booking emails will be skipped')
 })
-e x p o r t   {   a p p   }  
- 
+export { app }
