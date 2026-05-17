@@ -1,6 +1,7 @@
 <div align="center">
   <img src="public/images/logo-light.png" alt="Valedesk" height="60" />
   <h3>Premium Coworking Space Booking Platform</h3>
+  <h3>Currently hosted at https://valedesk.netlify.app/</h3>
   <p>Browse spaces, book instantly, and manage your workspace — all in one polished interface.</p>
 
   ![React](https://img.shields.io/badge/React_19-61DAFB?style=flat&logo=react&logoColor=black)
