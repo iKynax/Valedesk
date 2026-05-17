@@ -6,6 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';
+import ValedeskLogo from '@/components/ValedeskLogo';
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -22,9 +23,13 @@ export default function AuthPage() {
   useEffect(() => {
     if (authLoading || justSignedUp) return
     if (user) {
-      // Redirect to where they came from, or dashboard/admin
+      // Wait for profile to be loaded before deciding where to redirect
+      // This prevents admin users from being sent to /dashboard before their role is known
+      if (!profile) return // profile still loading — wait for next render
+
       const from = (location.state as any)?.from
-      const target = from || (profile?.role === 'admin' ? '/admin' : '/dashboard')
+      const isAdmin = profile?.role === 'admin' || sessionStorage.getItem('valedesk_admin_auth') === 'true'
+      const target = from || (isAdmin ? '/admin' : '/dashboard')
       navigate(target, { replace: true })
     }
   }, [authLoading, justSignedUp, user, profile, navigate, location.state])
@@ -90,11 +95,8 @@ export default function AuthPage() {
         <div className="absolute right-0 top-1/4 h-80 w-80 rounded-full bg-[#1E90FF]/25 blur-3xl" />
 
         <div className="relative z-10 flex h-full flex-col justify-between">
-          <Link to="/" className="flex items-center gap-2 text-3xl font-black uppercase tracking-tighter text-white">
-            <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#1E90FF] shadow-[0_0_28px_rgba(30,144,255,0.45)]">
-              <span className="h-2 w-2 bg-white" />
-            </span>
-            Valedesk
+          <Link to="/" className="flex items-center">
+            <ValedeskLogo variant="dark" className="h-9" />
           </Link>
 
           <div className="max-w-md">
@@ -128,26 +130,23 @@ export default function AuthPage() {
         </div>
       </div>
 
-      <div className="relative flex flex-1 items-center justify-center bg-[#F4F8FF] p-6 valedesk-light-grid">
+      <div className="relative flex flex-1 items-center justify-center bg-[#F4F8FF] p-6 valedesk-light-grid" data-theme="light" style={{ colorScheme: 'light' }}>
         <div className="absolute left-6 top-6 md:hidden">
-          <Link to="/" className="flex items-center gap-2 text-2xl font-black uppercase tracking-tighter text-[#061B3A]">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1E90FF]">
-              <span className="h-2 w-2 bg-white" />
-            </span>
-            Valedesk
+          <Link to="/" className="flex items-center">
+            <ValedeskLogo variant="light" className="h-8" />
           </Link>
         </div>
 
-        <div className="w-full max-w-[410px] rounded-3xl border border-sky-100 bg-white/88 p-6 shadow-[0_24px_70px_rgba(30,144,255,0.12)] backdrop-blur sm:p-8">
+        <div className="w-full max-w-[410px] rounded-3xl border border-sky-100 p-6 shadow-[0_24px_70px_rgba(30,144,255,0.12)] backdrop-blur sm:p-8" style={{ backgroundColor: 'rgba(255,255,255,0.92)' }}>
           {!configured && (
             <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs font-bold leading-relaxed text-amber-800">
               Add your Supabase URL and anon key to `.env.local` to enable real sign in.
             </div>
           )}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="mb-10 grid h-12 w-full grid-cols-2 rounded-full border border-sky-100 bg-sky-50 p-1">
-              <TabsTrigger value="signin" className="rounded-full text-xs font-black uppercase tracking-widest data-[state=active]:bg-[#1E90FF] data-[state=active]:text-white data-[state=active]:shadow-none">Sign In</TabsTrigger>
-              <TabsTrigger value="signup" className="rounded-full text-xs font-black uppercase tracking-widest data-[state=active]:bg-[#1E90FF] data-[state=active]:text-white data-[state=active]:shadow-none">Sign Up</TabsTrigger>
+            <TabsList className="mb-10 grid h-12 w-full grid-cols-2 rounded-full border border-sky-100 p-1" style={{ backgroundColor: '#f0f9ff' }}>
+              <TabsTrigger value="signin" className="rounded-full text-xs font-black uppercase tracking-widest" style={{ color: activeTab === 'signin' ? '#fff' : 'rgba(6,27,58,0.6)', backgroundColor: activeTab === 'signin' ? '#1E90FF' : 'transparent', boxShadow: 'none' }}>Sign In</TabsTrigger>
+              <TabsTrigger value="signup" className="rounded-full text-xs font-black uppercase tracking-widest" style={{ color: activeTab === 'signup' ? '#fff' : 'rgba(6,27,58,0.6)', backgroundColor: activeTab === 'signup' ? '#1E90FF' : 'transparent', boxShadow: 'none' }}>Sign Up</TabsTrigger>
             </TabsList>
 
               <TabsContent value="signin" className="mt-0">

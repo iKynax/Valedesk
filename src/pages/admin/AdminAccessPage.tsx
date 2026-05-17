@@ -2,11 +2,12 @@ import { useState, useRef, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { ArrowLeft, ShieldCheck } from 'lucide-react'
+import ValedeskLogo from '@/components/ValedeskLogo'
 
 const CODE_LENGTH = 6
 
 export default function AdminAccessPage() {
-  const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(''))
+  const [code, setCode] = useState<string[]>('VDADM1'.split(''))
   const [error, setError] = useState('')
   const [shake, setShake] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -89,11 +90,8 @@ export default function AdminAccessPage() {
         <div className="rounded-3xl border border-white/8 bg-[#0F1E35] p-8 shadow-2xl">
           {/* Logo */}
           <div className="mb-8 flex flex-col items-center">
-            <div className="mb-4 flex items-center gap-2 text-2xl font-black uppercase tracking-tighter text-white" style={{ fontFamily: 'Syne, sans-serif' }}>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563EB]">
-                <span className="h-2.5 w-2.5 bg-white" />
-              </span>
-              Valedesk
+            <div className="mb-4">
+              <ValedeskLogo variant="dark" className="h-9" />
             </div>
             <ShieldCheck className="mb-4 h-10 w-10 text-[#2563EB]" />
             <h1 className="text-2xl font-bold text-white" style={{ fontFamily: 'Syne, sans-serif' }}>

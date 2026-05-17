@@ -6,6 +6,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@/hooks/useAuth'
 import { motion, AnimatePresence } from 'motion/react'
+import ValedeskLogo from '@/components/ValedeskLogo'
 
 const NAV_ITEMS = [
   { name: 'Overview', path: '/admin', icon: LayoutDashboard },
@@ -69,15 +70,14 @@ export default function AdminLayout() {
     <>
       {/* Logo */}
       <div className={`flex h-16 items-center border-b border-white/8 ${collapsed ? 'justify-center px-2' : 'px-5'}`}>
-        <Link to="/" className="flex items-center gap-2 text-white">
-          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#2563EB]">
-            <span className="h-2 w-2 bg-white" />
-          </span>
-          {!collapsed && (
-            <span className="flex items-center gap-2 text-lg font-black uppercase tracking-tighter" style={{ fontFamily: 'Syne, sans-serif' }}>
-              Valedesk
-              <span className="rounded-full bg-[#2563EB] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider">Admin</span>
-            </span>
+        <Link to="/" className="flex items-center gap-2 min-w-0">
+          {collapsed ? (
+            <img src="/images/logo-dark.png" alt="Valedesk" className="h-8 w-8 object-contain object-left" />
+          ) : (
+            <>
+              <ValedeskLogo variant="dark" className="h-8 shrink-0" />
+              <span className="shrink-0 rounded-full bg-[#2563EB] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">Admin</span>
+            </>
           )}
         </Link>
       </div>
@@ -89,7 +89,7 @@ export default function AdminLayout() {
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#2563EB]/20 text-sm font-bold text-[#2563EB]">
               {(profile.full_name || 'A').charAt(0).toUpperCase()}
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1 overflow-hidden">
               <p className="truncate text-sm font-semibold text-white">{profile.full_name || 'Admin'}</p>
               <p className="truncate text-xs text-[#94A3B8]">Administrator</p>
             </div>

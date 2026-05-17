@@ -19,6 +19,8 @@ import HeroWidget from '@/components/landing/HeroWidget';
 import { brandLogos } from '@/components/landing/BrandLogos';
 import TestimonialCarousel from '@/components/landing/TestimonialCarousel';
 
+import ValedeskLogo from '@/components/ValedeskLogo';
+
 type SpaceStatus = 'Available' | 'Occupied' | 'Maintenance' | 'Limited';
 
 const SPACE_TYPES: Array<{
@@ -369,9 +371,8 @@ export default function LandingPage() {
       <footer className="bg-[#061B3A] px-6 py-10 text-white lg:px-12">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="mb-2 flex items-center gap-2 text-2xl font-black uppercase tracking-tighter">
-              <span className="flex h-7 w-7 items-center justify-center rounded-md bg-[#1E90FF]"><span className="h-2 w-2 bg-white" /></span>
-              Valedesk
+            <div className="mb-2">
+              <ValedeskLogo variant="dark" className="h-9" />
             </div>
             <p className="text-sm font-medium text-white/48">Your space. Your schedule. Your flow.</p>
           </div>

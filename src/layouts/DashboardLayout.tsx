@@ -6,6 +6,7 @@ import { hasSupabaseConfig } from '@/lib/env';
 import { createClient } from '@/lib/supabase/client';
 import LogoutModal from '@/components/LogoutModal';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import ValedeskLogo from '@/components/ValedeskLogo';
 
 function DashboardShell() {
   const location = useLocation();
@@ -69,11 +70,8 @@ function DashboardShell() {
     <div className="flex h-screen overflow-hidden bg-[#F4F8FF] font-sans text-[#061B3A]">
       <aside className="hidden w-[280px] shrink-0 flex-col border-r border-sky-100 bg-white/90 shadow-[12px_0_40px_rgba(30,144,255,0.06)] md:flex">
         <div className="flex h-20 items-center border-b border-sky-100 bg-white px-8">
-          <Link to="/" className="flex items-center gap-2 text-2xl font-black uppercase tracking-tighter text-[#061B3A]">
-            <span className="flex h-6 w-6 items-center justify-center rounded-md bg-[#1E90FF]">
-              <span className="h-2 w-2 bg-white" />
-            </span>
-            Valedesk
+          <Link to="/" className="flex items-center">
+            <ValedeskLogo variant={dark ? 'dark' : 'light'} className="h-9" />
           </Link>
         </div>
 
@@ -123,11 +121,8 @@ function DashboardShell() {
       <main className="flex flex-1 flex-col overflow-auto bg-[#F4F8FF] valedesk-light-grid">
         <header className="flex h-16 shrink-0 items-center justify-between border-b border-sky-100 bg-white px-6">
           {/* Mobile logo */}
-          <Link to="/" className="flex items-center gap-2 text-xl font-black uppercase tracking-tighter text-[#061B3A] md:hidden">
-            <span className="flex h-5 w-5 items-center justify-center rounded-md bg-[#1E90FF]">
-              <span className="h-1.5 w-1.5 bg-white" />
-            </span>
-            Valedesk
+          <Link to="/" className="flex items-center md:hidden">
+            <ValedeskLogo variant={dark ? 'dark' : 'light'} className="h-8" />
           </Link>
 
           {/* Spacer for desktop */}

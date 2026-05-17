@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { useDarkMode } from '@/hooks/useDarkMode';
+import ValedeskLogo from '@/components/ValedeskLogo';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -31,6 +32,8 @@ export default function Navbar() {
       ? 'mx-auto max-w-7xl mt-3 rounded-full bg-white/60 border border-white/40 py-2.5 shadow-[0_8px_32px_rgba(30,144,255,0.08),inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-xl'
       : 'bg-transparent border-b border-transparent py-6';
 
+  // Logo needs dark variant when: global dark mode OR hero (not scrolled) OR near-bottom dark section
+  const needsDarkLogo = dark || nearBottom || !scrolled;
   const darkMode = nearBottom;
   const textClass = darkMode ? 'text-white' : scrolled ? 'text-[#061B3A]' : 'text-white';
   const mutedClass = darkMode ? 'text-white/55 hover:text-white' : scrolled ? 'text-[#061B3A]/55 hover:text-[#1E90FF]' : 'text-white/62 hover:text-white';
@@ -39,11 +42,8 @@ export default function Navbar() {
     <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${navClass}`}>
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-full">
         
-        <Link to="/" className={`${textClass} font-black uppercase tracking-tighter text-3xl flex items-center gap-2 transition-colors`}>
-          <span className="w-6 h-6 bg-[#1E90FF] rounded-md flex items-center justify-center shadow-[0_0_24px_rgba(30,144,255,0.45)]">
-            <span className="w-2 h-2 bg-white rounded-none" />
-          </span>
-          Valedesk
+        <Link to="/" className="flex items-center transition-opacity hover:opacity-80">
+          <ValedeskLogo variant={needsDarkLogo ? 'dark' : 'light'} className="h-9" />
         </Link>
         
         {/* Desktop Nav */}
@@ -105,12 +105,7 @@ export default function Navbar() {
             className="fixed inset-0 z-50 bg-white valedesk-light-grid p-6 flex flex-col items-center justify-center"
           >
             <div className="absolute top-6 left-6 right-6 flex justify-between items-center">
-              <span className="text-[#061B3A] font-black uppercase tracking-tighter text-3xl flex items-center gap-2">
-                <span className="w-6 h-6 bg-[#1E90FF] rounded-md flex items-center justify-center">
-                  <span className="w-2 h-2 bg-white" />
-                </span>
-                Valedesk
-              </span>
+              <ValedeskLogo variant="light" className="h-9" />
               <button className="text-[#061B3A] p-2 border border-sky-200 hover:bg-sky-50 rounded-full" onClick={() => setMobileMenuOpen(false)} aria-label="Close navigation menu">
                 <X className="w-6 h-6" />
               </button>

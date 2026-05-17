@@ -4,6 +4,7 @@ import { motion } from 'motion/react'
 import { ArrowLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
+import ValedeskLogo from '@/components/ValedeskLogo'
 
 export default function AdminAuthPage() {
   const navigate = useNavigate()
@@ -109,11 +110,8 @@ export default function AdminAuthPage() {
         <div className="rounded-3xl border border-white/8 bg-[#0F1E35] p-8 shadow-2xl">
           {/* Logo */}
           <div className="mb-6 flex flex-col items-center">
-            <div className="mb-3 flex items-center gap-2 text-2xl font-black uppercase tracking-tighter text-white" style={{ fontFamily: 'Syne, sans-serif' }}>
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#2563EB]">
-                <span className="h-2.5 w-2.5 bg-white" />
-              </span>
-              Valedesk
+            <div className="mb-3">
+              <ValedeskLogo variant="dark" className="h-9" />
             </div>
             <h1 className="text-xl font-bold text-white" style={{ fontFamily: 'Syne, sans-serif' }}>
               Admin Authentication

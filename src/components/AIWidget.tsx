@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MessageCircle, X, Send, Bot, User, Loader2, AlertCircle } from 'lucide-react';
+import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -59,21 +59,129 @@ const SUGGESTED_QUESTIONS = [
 
 /* ── Helper: try local Q&A first ────────────────────────────── */
 
+const STOP_WORDS = new Set([
+  'a','an','the','is','are','was','were','do','does','did','have','has','had',
+  'i','me','my','you','your','we','our','they','their','it','its','of','in',
+  'on','at','to','for','with','and','or','but','not','so','if','can','will',
+  'be','been','being','what','where','when','how','who','which','that','this',
+]);
+
 function tryLocalAnswer(input: string): string | null {
-  const normalized = input.toLowerCase().replace(/[?!.,]/g, '').trim();
+  const normalized = input.toLowerCase().replace(/[?!.,'"]/g, '').trim();
+
+  // 1. Exact substring match (user's input contains the key, or key contains input)
   for (const [key, answer] of Object.entries(QUICK_ANSWERS)) {
     if (normalized.includes(key) || key.includes(normalized)) {
       return answer;
     }
   }
-  // Check partial matches
-  const words = normalized.split(/\s+/);
+
+  // 2. Keyword match — only count meaningful (non-stop) words, require high overlap
+  const meaningfulWords = normalized.split(/\s+/).filter(w => !STOP_WORDS.has(w) && w.length > 2);
+  if (meaningfulWords.length === 0) return null;
+
   for (const [key, answer] of Object.entries(QUICK_ANSWERS)) {
-    const keyWords = key.split(/\s+/);
-    const matchCount = words.filter(w => keyWords.some(kw => kw.includes(w) || w.includes(kw))).length;
-    if (matchCount >= 2) return answer;
+    const keyMeaningful = key.split(/\s+/).filter(w => !STOP_WORDS.has(w) && w.length > 2);
+    if (keyMeaningful.length === 0) continue;
+    const matchCount = meaningfulWords.filter(w =>
+      keyMeaningful.some(kw => kw === w || (kw.length > 4 && (kw.includes(w) || w.includes(kw))))
+    ).length;
+    // Require matching majority of the key's meaningful words
+    if (matchCount >= Math.max(2, Math.ceil(keyMeaningful.length * 0.6))) {
+      return answer;
+    }
+  }
+
+  return null;
+}
+
+/* ── Smart keyword fallback (when API is unavailable) ───────── */
+
+const KEYWORD_RESPONSES: Array<{ keywords: string[]; response: string }> = [
+  { keywords: ['refund', 'money back', 'reimburse'], response: 'For refund inquiries, please contact our support team at **hello@valedesk.com**. Refund eligibility depends on cancellation timing — we generally process refunds for cancellations made at least **24 hours** before your booking.' },
+  { keywords: ['cheap', 'cheapest', 'affordable', 'budget', 'lowest price'], response: 'Our most affordable option is the **Hot Desk** at just **RM15/hr**! It includes WiFi, coffee, and power outlets. Perfect for freelancers and remote workers looking for a productive space on a budget.' },
+  { keywords: ['expensive', 'premium', 'luxury', 'best room', 'vip'], response: 'Our most premium space is the **Event Space** at **RM350/hr**, perfect for large gatherings. For executive meetings, our **Boardrooms** at **RM120-180/hr** offer top-tier AV equipment and catering options.' },
+  { keywords: ['event', 'party', 'gathering', 'celebration', 'conference'], response: 'Our **Event Spaces** accommodate large gatherings at **RM350/hr**. They come fully equipped with AV systems, flexible seating arrangements, and optional catering services. Book through **Browse Spaces** on your dashboard!' },
+  { keywords: ['park', 'parking', 'car', 'drive'], response: 'Yes, there is **ample parking** available at our Bangsar South location. The building offers both covered and open parking at standard mall rates. We\'re also accessible via **LRT Universiti station**.' },
+  { keywords: ['pet', 'dog', 'cat', 'animal'], response: 'Unfortunately, pets are **not allowed** in our coworking spaces for the comfort and safety of all members. Service animals with proper documentation are the exception.' },
+  { keywords: ['food', 'eat', 'lunch', 'restaurant', 'cafe', 'catering'], response: 'We provide complimentary **coffee and tea** in all spaces. Premium rooms include **catering service options** for meetings. Our Bangsar South location also has many restaurants and cafes nearby!' },
+  { keywords: ['payment', 'pay', 'stripe', 'credit card', 'debit'], response: 'Payments are processed securely via **Stripe**. We accept all major credit/debit cards. Payment is confirmed instantly at the time of booking.' },
+  { keywords: ['register', 'sign up', 'create account', 'join'], response: 'Click **Get Started** on our homepage to create your free account. You can sign up with your email or social accounts. Once registered, you can browse and book spaces immediately!' },
+  { keywords: ['private office', 'dedicated', 'permanent'], response: 'We offer **Private Offices** for teams needing a dedicated space. These come fully furnished with lockable doors, hi-speed WiFi, and 24/7 access options. Check **Browse Spaces** for availability and pricing!' },
+  { keywords: ['focus pod', 'quiet', 'silent', 'concentrate'], response: 'Our **Focus Pods** are designed for deep work — soundproofed, private, and equipped with ergonomic seating and hi-speed WiFi. Perfect when you need zero distractions!' },
+  { keywords: ['hot desk', 'open desk', 'shared desk', 'cowork'], response: 'Our **Hot Desks** start at **RM15/hr** and give you access to a shared workspace with WiFi, coffee, power outlets, and a vibrant community of professionals.' },
+  { keywords: ['boardroom', 'board room', 'executive'], response: 'Our **Boardrooms** range from **RM120-180/hr** and accommodate 10-20 people. They come equipped with large displays, video conferencing, whiteboards, and optional catering.' },
+  { keywords: ['thank', 'thanks', 'appreciate'], response: 'You\'re welcome! 😊 If you have any other questions about Valedesk, feel free to ask. Happy coworking!' },
+  { keywords: ['hello', 'hi ', 'hey', 'good morning', 'good afternoon'], response: 'Hello! 👋 Welcome to Valedesk. How can I help you today? Feel free to ask about our spaces, pricing, booking process, or amenities!' },
+];
+
+function tryKeywordFallback(input: string): string | null {
+  const lower = input.toLowerCase();
+  for (const { keywords, response } of KEYWORD_RESPONSES) {
+    if (keywords.some(kw => lower.includes(kw))) return response;
   }
   return null;
+}
+
+/* ── Gemini API call (with model fallback) ──────────────────── */
+
+const GEMINI_MODELS = ['gemini-2.0-flash', 'gemini-2.0-flash-lite'];
+
+async function callGeminiAPI(
+  conversationHistory: Message[],
+  apiKey: string,
+): Promise<string> {
+  const systemInstruction = conversationHistory.find(m => m.role === 'system')?.content || SYSTEM_PROMPT;
+  const chatMessages = conversationHistory
+    .filter(m => m.role !== 'system')
+    .map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }],
+    }));
+
+  // Gemini requires alternating user/model turns
+  const mergedMessages: typeof chatMessages = [];
+  for (const msg of chatMessages) {
+    const last = mergedMessages[mergedMessages.length - 1];
+    if (last && last.role === msg.role) {
+      last.parts[0].text += '\n' + msg.parts[0].text;
+    } else {
+      mergedMessages.push({ ...msg, parts: [...msg.parts] });
+    }
+  }
+  if (mergedMessages.length > 0 && mergedMessages[0].role !== 'user') {
+    mergedMessages.shift();
+  }
+
+  const body = JSON.stringify({
+    system_instruction: { parts: [{ text: systemInstruction }] },
+    contents: mergedMessages,
+    generationConfig: { maxOutputTokens: 300, temperature: 0.7 },
+  });
+
+  // Try each model until one works
+  let lastError = '';
+  for (const model of GEMINI_MODELS) {
+    try {
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body },
+      );
+      if (!response.ok) {
+        const errText = await response.text();
+        console.warn(`[Vale AI] ${model} returned ${response.status}:`, errText);
+        lastError = `${response.status}`;
+        continue; // try next model
+      }
+      const data = await response.json();
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (text) return text;
+    } catch (e) {
+      console.warn(`[Vale AI] ${model} failed:`, e);
+      lastError = String(e);
+    }
+  }
+  throw new Error(`All Gemini models failed. Last: ${lastError}`);
 }
 
 /* ── Component ──────────────────────────────────────────────── */
@@ -119,8 +227,8 @@ export default function AIWidget() {
       return;
     }
 
-    // 2. Try OpenRouter API
-    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || '';
+    // 2. Try Gemini API
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
     if (!apiKey) {
       // No API key — use built-in fallback
       setTimeout(() => {
@@ -141,36 +249,20 @@ export default function AIWidget() {
 
       const conversationHistory = [systemMsg, ...messages.slice(-8), userMsg];
 
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': window.location.origin,
-          'X-Title': 'Valedesk AI',
-        },
-        body: JSON.stringify({
-          model: 'deepseek/deepseek-v4-flash:free',
-          messages: conversationHistory.map(m => ({ role: m.role, content: m.content })),
-          max_tokens: 300,
-          temperature: 0.7,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      const reply = data.choices?.[0]?.message?.content || "I'm having trouble processing that. Please try again!";
-
+      const reply = await callGeminiAPI(conversationHistory, apiKey);
       setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
     } catch (err) {
       console.error('[Vale AI] Error:', err);
-      setMessages(prev => [...prev, {
-        role: 'assistant',
-        content: "I'm experiencing a temporary connection issue. In the meantime, I can help with common questions about Valedesk — try asking about our **spaces, pricing, or how to book**!"
-      }]);
+      // Fallback: try keyword-based response before showing generic error
+      const keywordAnswer = tryKeywordFallback(content);
+      if (keywordAnswer) {
+        setMessages(prev => [...prev, { role: 'assistant', content: keywordAnswer }]);
+      } else {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: "Great question! While I'm connecting to my AI brain, I can help with common topics — try asking about our **spaces, pricing, amenities, booking process, location, parking, refunds, or payment methods**. For detailed inquiries, reach our team at **hello@valedesk.com**."
+        }]);
+      }
     } finally {
       setLoading(false);
     }
@@ -182,14 +274,15 @@ export default function AIWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <>
+      {/* ── Chat panel (positioned independently) ──────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="mb-4 flex h-[560px] w-[min(400px,calc(100vw-48px))] flex-col overflow-hidden rounded-3xl border border-sky-200 bg-white shadow-[0_24px_70px_rgba(30,144,255,0.22)]"
+            className="fixed bottom-24 right-6 z-50 flex h-[560px] w-[min(400px,calc(100vw-48px))] flex-col overflow-hidden rounded-3xl border border-sky-200 bg-white shadow-[0_24px_70px_rgba(30,144,255,0.22)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-sky-100 bg-[#061B3A] p-4 text-white">
@@ -199,7 +292,7 @@ export default function AIWidget() {
                 </div>
                 <div>
                   <h3 className="text-xs font-black uppercase tracking-widest">Vale AI</h3>
-                  <p className="text-[9px] font-bold text-sky-300/70">Valedesk Assistant</p>
+                  <p className="text-[9px] font-bold text-sky-300/70">Powered by Gemini Free API (Rate Limited)</p>
                 </div>
               </div>
               <button onClick={() => setIsOpen(false)} className="rounded-full border border-white/10 p-1 text-white/55 transition-colors hover:bg-white/10 hover:text-white" aria-label="Close Vale AI">
@@ -220,20 +313,19 @@ export default function AIWidget() {
                   </div>
                 </div>
 
-                {/* Suggested questions (show only when no messages) */}
-                {messages.length === 0 && (
-                  <div className="ml-9 flex flex-wrap gap-1.5">
-                    {SUGGESTED_QUESTIONS.map((q) => (
-                      <button
-                        key={q}
-                        onClick={() => sendMessage(q)}
-                        className="rounded-full border border-blue-200 bg-white px-3 py-1.5 text-[10px] font-bold text-blue-600 transition-colors hover:bg-blue-50"
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                {/* Suggested questions — always visible at top */}
+                <div className="ml-9 flex flex-wrap gap-1.5">
+                  {SUGGESTED_QUESTIONS.map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => sendMessage(q)}
+                      disabled={loading}
+                      className="rounded-full border border-blue-200 bg-white px-3 py-1.5 text-[10px] font-bold text-blue-600 transition-colors hover:bg-blue-50 disabled:opacity-50"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
 
                 {/* Conversation */}
                 {messages.map((msg, i) => (
@@ -294,14 +386,15 @@ export default function AIWidget() {
         )}
       </AnimatePresence>
 
+      {/* ── Floating bubble (always fixed bottom-right) ────── */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative flex h-14 w-14 items-center justify-center rounded-full bg-[#1E90FF] text-white shadow-[0_16px_40px_rgba(30,144,255,0.34)] transition-all hover:-translate-y-1 hover:bg-[#0B5ED7]"
+        className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#1E90FF] text-white shadow-[0_16px_40px_rgba(30,144,255,0.34)] transition-all hover:-translate-y-1 hover:bg-[#0B5ED7]"
         aria-label={isOpen ? 'Close Vale AI' : 'Open Vale AI'}
       >
         <span className="absolute inset-0 rounded-full border border-sky-300/60" style={{ animation: 'valedesk-pulse-blue 1.8s ease-out infinite' }} />
         {isOpen ? <X className="relative h-6 w-6" /> : <MessageCircle className="relative h-6 w-6" />}
       </button>
-    </div>
+    </>
   );
 }
